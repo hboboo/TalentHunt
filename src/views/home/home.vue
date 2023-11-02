@@ -2,18 +2,42 @@
   <div>
     <section class="home-container">
       <section class="navbar-container">
-         <van-nav-bar title="" left-text="TalentHunt" @click-left="reload">
-          <template #right>
-            <van-icon name="search" size="18" />
-          </template>
-        </van-nav-bar>
+        <div class="header-nav">
+          <div>
+            <span :class="{active_job_type: changeShow == 'career'}" @click="changeShow = 'career'">全职</span>
+          </div>
+          <div>
+            <span :class="{active_job_type: changeShow == 'internship'}" @click="changeShow = 'internship'">实习</span>
+          </div>
+          <van-icon name="search" class="search"/>
+        </div>
+        <div class="recommendation-title">
+          <span :class="{active_content_type: content == 'recommendation'}" @click="content = 'recommendation'">推荐</span>
+          <span :class="{active_content_type: content == 'popular'}" @click="content = 'popular'">热门</span>
+          <div class="button-container">
+            <div>
+               <button class="button-left">{{city}}<van-icon name="arrow-down" /></button>
+            </div>
+            <div>
+              <button>{{siev}}<van-icon name="arrow-down" /></button>
+            </div>
+          </div>
+        </div>
       </section>
-      <section class="tab-container">
-        <van-tabs v-model="tabActive" animated>
-        <van-tab title="全职">内容 1</van-tab>
-        <van-tab title="实习">内容 2</van-tab>
-        </van-tabs>
+      <section class="swipe-container">
+        <van-swipe :autoplay="3000">
+          <van-swipe-item v-for="(image, index) in images" :key="index">
+            <img :src="image">
+          </van-swipe-item>
+        </van-swipe>
       </section>
+      <company-list></company-list>
+      <company-list></company-list>
+      <company-list></company-list>
+      <company-list></company-list>
+      <company-list></company-list>
+      <company-list></company-list>
+      <company-list></company-list>
       <section class="tabbar-container">
         <van-tabbar v-model="tabbarActive">
           <van-tabbar-item icon="home-o">职位</van-tabbar-item>
@@ -27,14 +51,22 @@
 </template>
 
 <script>
-import { NavBar, Icon,Tab, Tabs,Tabbar, TabbarItem } from 'vant';
+import {Icon,Tabbar,TabbarItem,Swipe,SwipeItem} from 'vant';
+import companyList from '../../components/common/companyList.vue'
 export default {
   name: 'Home',
   
   data() {
     return {
-      tabActive: 0, //展示tab标签内容索引
-      tabbarActive: 0,//tabbar状态栏索引
+      tabbarActive: 0,  //tabbar状态栏索引
+      changeShow: 'career', //默认选取全职
+      content: 'recommendation',  //默认选取推荐
+      city: '广州', //按钮
+      siev: '筛选',
+      images: [
+        'https://img01.yzcdn.cn/vant/apple-1.jpg',
+        'https://img01.yzcdn.cn/vant/apple-2.jpg',
+      ],
     };
   },
 
@@ -43,23 +75,75 @@ export default {
   },
 
   methods: {
-    //点击标题刷新页面
-    reload() {
-      window.location.reload()
-    }
   },
 
   components: {
-    [NavBar.name]: NavBar,
     [Icon.name]: Icon,
-    [Tab.name]: Tab,
-    [Tabs.name]: Tabs,
     [Tabbar.name]: Tabbar,
     [TabbarItem.name]: TabbarItem,
+    [Swipe.name]: Swipe,
+    [SwipeItem.name]: SwipeItem,
+    companyList,
   }
 };
 </script>
 
 <style lang="less" scoped>
+  @import '../../style/mixin.less';
 
+  .navbar-container{
+    display: flex;
+    flex-direction: column;
+    .header-nav{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding-top: 0.15rem;
+      .wh(100%, 1.95rem);
+      div{
+        display: flex;
+        margin-left: 0.5rem;
+        height: 100%;
+        align-items: center;
+        font-size: 0.8rem;
+        .active_job_type{
+          font-weight: 800;
+          font-size: 1rem;
+          border-bottom: 3px solid brown;
+        }
+      }
+      .search{
+        margin-left: 10rem;
+        color: blue;
+      }
+    }
+    .recommendation-title{
+      display: flex;
+      height: 2.5rem;
+      font-size: 0.7rem;
+      align-items: center;
+      border-bottom: 1px solid @bc;
+      span{
+        margin-left: 0.6rem;
+      }
+      .active_content_type{
+        font-weight: 800;
+      }
+      .button-container{
+        display: flex;
+        margin-left: 6rem;
+        align-items: center;
+        .button-left{
+          margin-right: 0.9rem;
+        }
+      }
+    }
+  }
+  .swipe-container{
+    img{
+      .wh(100%, 100%);
+      max-height: 5rem;
+      padding: 0.2rem 0;
+    }
+  }
 </style>
