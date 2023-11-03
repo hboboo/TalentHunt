@@ -4,6 +4,7 @@ import App from '../App.vue'
 
 const home = () => import('../views/home/home.vue')
 const search = () => import('../views/search/search.vue')
+const homePage = () => import('../views/homepage/homePage.vue')
 
 Vue.use(VueRouter)
 
@@ -24,6 +25,11 @@ const routes = [{
     {
       path: '/search',
       component: search
+    },
+    //个人主页
+    {
+      path: '/homepage',
+      component: homePage
     },
   ]
 }]
