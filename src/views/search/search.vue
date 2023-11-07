@@ -4,7 +4,7 @@
       <section class="header-nav">
         <van-icon name="arrow-left" />
         <van-search v-model="value" placeholder="请输入搜索关键词" style="width: 12rem"/>
-        <button class="search-button">搜索</button>
+        <button class="search-button" @click="test">搜索</button>
       </section>
       <section class="hot-searches-container">
         <h1 class="hot-searches-head">热门搜索</h1>
@@ -68,7 +68,13 @@ export default {
   },
 
   methods: {
-    
+    test(){
+      //请求后打印导控制台
+      this.$http.get('/job/find')
+      .then((res) => {
+        console.log(res.data);
+      })
+    }
   },
 
   components: {

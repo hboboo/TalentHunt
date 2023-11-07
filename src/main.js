@@ -7,6 +7,9 @@ import './style/common.less'
 
 Vue.config.productionTip = false
 
+import http from './config/http'
+Vue.prototype.$http = http
+
 new Vue({
   router,
   store,

@@ -4,10 +4,10 @@
       <section class="navbar-container">
         <div class="header-nav">
           <div>
-            <span :class="{active_job_type: changeShow == 'career'}" @click="changeShow = 'career'">全职</span>
+            <span :class="{active_job_type: changeShow == 'career'}" @click="handleClick('career',true)">全职</span>
           </div>
           <div>
-            <span :class="{active_job_type: changeShow == 'internship'}" @click="changeShow = 'internship'">实习</span>
+            <span :class="{active_job_type: changeShow == 'internship'}" @click="handleClick('internship',false)">实习</span>
           </div>
           <van-icon name="search" class="search"/>
         </div>
@@ -31,12 +31,6 @@
           </van-swipe-item>
         </van-swipe>
       </section>
-      <company-list></company-list>
-      <company-list></company-list>
-      <company-list></company-list>
-      <company-list></company-list>
-      <company-list></company-list>
-      <company-list></company-list>
       <company-list></company-list>
       <section class="tabbar-container">
         <van-tabbar v-model="tabbarActive">
@@ -69,12 +63,33 @@ export default {
       ],
     };
   },
+  created() {
+    this.getRecommendation(true)
+  },
 
   mounted() {
     
   },
 
   methods: {
+    handleClick(jobType, isFullTime) {
+      this.changeShow = jobType; // 更新 changeShow 的值
+      this.getRecommendation(isFullTime)
+    },
+
+    //请求招聘列表
+    getRecommendation(isFullTime) {
+      const isFullTimeParam = isFullTime ? 'true' : 'false'; 
+      this.$http.get('/job/find', {
+        params: {
+          is_full_time: isFullTimeParam
+        }
+      })
+      .then((res) =>{
+        console.log(res.data);
+      })
+      console.log(isFullTime);
+    },
   },
 
   components: {
