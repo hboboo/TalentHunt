@@ -2,21 +2,21 @@
   <div>
     <section class="list-container">
       <ul>
-        <li class="list-container-li">
+        <li class="list-container-li" v-for="item in list" :key="item._id">
           <div class="header">
-            <h3>前端开发</h3>
-            <span>6-10k</span>
+            <h3>{{item.title}}</h3>
+            <span>{{item.salary}}</span>
           </div>
           <div class="describe">
-            <span>公司名字</span>
-            <span>公司资本</span>
+            <span>{{item.company_name}}</span>
+            <span>{{item.company_capital}}</span>
           </div>
           <div class="recruiter">
             <div class="recruiter-info">
               <van-icon name="user-circle-o" />
               <span>许诗柔-人事</span>
             </div>
-            <span class="company-address">黄埔区 厂商</span>
+            <span class="company-address">{{item.region}}-{{item.place}}</span>
           </div>
         </li>
       </ul>
@@ -29,8 +29,17 @@ import {Icon} from 'vant';
 export default {
   name: "CompanyList",
   data() {
-    return {};
+    return {
+    };
   },
+
+  props: {
+    list: {
+      type: Array,
+      require: true
+    }
+  },
+
   mounted() {},
   methods: {},
   components: {

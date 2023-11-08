@@ -31,7 +31,7 @@
           </van-swipe-item>
         </van-swipe>
       </section>
-      <company-list></company-list>
+      <company-list :list='jobList'></company-list>
       <section class="tabbar-container">
         <van-tabbar v-model="tabbarActive">
           <van-tabbar-item icon="home-o">职位</van-tabbar-item>
@@ -61,6 +61,7 @@ export default {
         'https://img01.yzcdn.cn/vant/apple-1.jpg',
         'https://img01.yzcdn.cn/vant/apple-2.jpg',
       ],
+      jobList: []
     };
   },
   created() {
@@ -73,8 +74,9 @@ export default {
 
   methods: {
     handleClick(jobType, isFullTime) {
-      this.changeShow = jobType; // 更新 changeShow 的值
-      this.getRecommendation(isFullTime)
+      this.changeShow = jobType;    // 更新 changeShow 的值
+      this.getRecommendation(isFullTime)  //传入是否全职参数
+      console.log(this.jobList);
     },
 
     //请求招聘列表
@@ -86,10 +88,10 @@ export default {
         }
       })
       .then((res) =>{
-        console.log(res.data);
+        this.jobList = res.data
       })
-      console.log(isFullTime);
     },
+
   },
 
   components: {
