@@ -12,8 +12,8 @@
           <van-icon name="search" class="search"/>
         </div>
         <div class="recommendation-title">
-          <span :class="{active_content_type: content == 'recommendation'}" @click="content = 'recommendation'">推荐</span>
-          <span :class="{active_content_type: content == 'popular'}" @click="content = 'popular'">热门</span>
+          <span :class="{active_content_type: content == 'recommendation'}" @click="selectContent('recommendation')">全部</span>
+          <span :class="{active_content_type: content == 'popular'}" @click="selectContent('popular')">热门</span>
           <div class="button-container">
             <div>
                <button class="button-left">{{city}}<van-icon name="arrow-down" /></button>
@@ -54,18 +54,19 @@ export default {
     return {
       tabbarActive: 0,  //tabbar状态栏索引
       changeShow: 'career', //默认选取全职
-      content: 'recommendation',  //默认选取推荐
+      content: '',  //默认选取全部
       city: '广州', //按钮
       siev: '筛选',
       images: [
         'https://img01.yzcdn.cn/vant/apple-1.jpg',
         'https://img01.yzcdn.cn/vant/apple-2.jpg',
       ],
-      jobList: []
+      jobList: [], //请求来的列表
+      jobType: '', 
     };
   },
   created() {
-    this.getRecommendation(true)
+    this.getRecommendation(true);
   },
 
   mounted() {
@@ -74,14 +75,16 @@ export default {
 
   methods: {
     //显示样式的切换&&传递一个查询参数请求招聘信息
-    handleClick(jobType, isFullTime) {
+    handleClick (jobType, isFullTime) {
+      this.jobType = jobType; // 更新一级筛选结果
       this.changeShow = jobType;    // 更新 changeShow 的值
       this.getRecommendation(isFullTime)  //传入是否全职参数
     },
 
     //请求招聘列表
-    getRecommendation(isFullTime) {
+    getRecommendation (isFullTime) {
       const isFullTimeParam = isFullTime ? 'true' : 'false'; 
+      this.content = 'recommendation'
       this.$http.get('/job/find', {
         params: {
           is_full_time: isFullTimeParam
@@ -92,6 +95,25 @@ export default {
       })
     },
 
+    //选择热门or全部
+    selectContent (contentType) {
+      this.content = contentType   //更新样式
+      switch (contentType) {
+        case 'recommendation':
+          if (this.jobType === 'career') {
+              this.getRecommendation(true); // 传入全职参数  
+            } else {
+              this.getRecommendation(false); // 传入实习参数 
+            }
+        break;
+        case 'popular':
+          const filteredJobList = this.jobList.filter(item => item.hot === true);
+          this.$set(this, 'jobList', filteredJobList);
+        break;
+      }
+    },
+
+  
   },
 
   components: {
