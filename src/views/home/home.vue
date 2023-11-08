@@ -73,10 +73,10 @@ export default {
   },
 
   methods: {
+    //显示样式的切换&&传递一个查询参数请求招聘信息
     handleClick(jobType, isFullTime) {
       this.changeShow = jobType;    // 更新 changeShow 的值
       this.getRecommendation(isFullTime)  //传入是否全职参数
-      console.log(this.jobList);
     },
 
     //请求招聘列表

@@ -4,7 +4,7 @@
       <ul>
         <li class="list-container-li" v-for="item in list" :key="item._id">
           <div class="header">
-            <h3>{{item.title}}</h3>
+            <h3 class="ellipsis">{{item.title}}</h3>
             <span>{{item.salary}}</span>
           </div>
           <div class="describe">
@@ -59,6 +59,7 @@ export default {
     }
     .header {
     display: flex;
+    position: relative;
     .wh(100%,1.8rem,);
     align-items: center;
     h3 {
@@ -67,9 +68,10 @@ export default {
       margin-left: 0.4rem;
     }
     span {
+      position: absolute;
       .sc(0.9rem, #1c7396);
       font-weight: 600;
-      margin-left: 8rem;
+      right: 1.5rem;
     }
     }
     .describe {
