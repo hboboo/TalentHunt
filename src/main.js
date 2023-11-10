@@ -5,6 +5,7 @@ import store from './store'
 import './config/rem'
 import './style/common.less'
 
+
 Vue.config.productionTip = false
 
 import http from './config/http'

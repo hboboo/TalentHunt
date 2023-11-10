@@ -2,62 +2,63 @@
   <div>
     <section class="list-container">
       <ul>
-        <li class="list-container-li" v-for="item in list" :key="item._id">
-          <div class="header">
-            <h3 class="ellipsis">{{item.title}}</h3>
-            <span>{{item.salary}}</span>
-          </div>
-          <div class="describe">
-            <span>{{item.company_name}}</span>
-            <span>{{item.company_capital}}</span>
-          </div>
-          <div class="recruiter">
-            <div class="recruiter-info">
-              <van-icon name="user-circle-o" />
-              <span>许诗柔-人事</span>
+        <router-link to='/jobDetails'  v-for="item in list" :key="item._id">
+          <li class="list-container-li">
+            <div class="header">
+              <h3 class="ellipsis">{{ item.title }}</h3>
+              <span>{{ item.salary }}</span>
             </div>
-            <span class="company-address">{{item.region}}-{{item.place}}</span>
-          </div>
-        </li>
+            <div class="describe">
+              <span>{{ item.company_name }}</span>
+              <span>{{ item.company_capital }}</span>
+            </div>
+            <div class="recruiter">
+              <div class="recruiter-info">
+                <van-icon name="user-circle-o" />
+                <span>许诗柔-人事</span>
+              </div>
+              <span class="company-address">{{ item.region }}-{{ item.place }}</span>
+            </div>
+          </li>
+        </router-link>
       </ul>
     </section>
   </div>
 </template>
 
 <script>
-import {Icon} from 'vant';
+import { Icon } from "vant";
 export default {
   name: "CompanyList",
   data() {
-    return {
-    };
+    return {};
   },
 
   props: {
     list: {
       type: Array,
-      require: true
-    }
+      require: true,
+    },
   },
 
   mounted() {},
   methods: {},
   components: {
     [Icon.name]: Icon,
-  }
+  },
 };
 </script>
 
 <style lang="less" scoped>
-  @import "../../style/mixin.less";
-  .list-container {
-    margin: 0.1rem 0.3rem;
-    .list-container-li {
+@import "../../style/mixin.less";
+.list-container {
+  margin: 0.1rem 0.3rem;
+  .list-container-li {
     margin-bottom: 0.3rem;
     border-radius: 0.48rem;
     background-color: #fff;
-    }
-    .header {
+  }
+  .header {
     display: flex;
     position: relative;
     .wh(100%,1.8rem,);
@@ -73,15 +74,15 @@ export default {
       font-weight: 600;
       right: 1.5rem;
     }
-    }
-    .describe {
+  }
+  .describe {
     display: flex;
     span {
       .sc(0.7rem, #666);
       margin-left: 0.4rem;
     }
-    }
-    .recruiter {
+  }
+  .recruiter {
     display: flex;
     .wh(100%,1.8rem,);
     align-items: center;
@@ -94,6 +95,6 @@ export default {
       .sc(0.6rem, #666);
       font-weight: 500;
     }
-    }
   }
+}
 </style>
