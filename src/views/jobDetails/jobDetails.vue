@@ -111,10 +111,10 @@
           </div>
         </div>
       </section>
+      <transition mode="out-in" name="fade">
+        <router-view></router-view>
+      </transition>
     </section>
-    <transition>
-      <router-view></router-view>
-    </transition>
   </div>
 </template>
 
@@ -158,7 +158,8 @@ export default {
 
   .job-container {
     background-color: #fff;
-    overflow: auto
+    overflow: auto;
+    position: relative;
   }
 
   .navbar-top-container {
