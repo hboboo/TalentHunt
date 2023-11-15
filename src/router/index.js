@@ -7,6 +7,7 @@ const search = () => import('../views/search/search.vue')
 const homePage = () => import('../views/homepage/homePage.vue')
 const jobDetails = () => import('../views/jobDetails/jobDetails.vue')
 const companyDetails = () => import('../views/jobDetails/companyDetails/companyDetails.vue')
+const register = () => import('../views/register/register.vue')
 const login = () => import('../views/login/login.vue')
 
 Vue.use(VueRouter)
@@ -19,7 +20,12 @@ const routes = [{
       path: '',
       redirect: '/home'
     },
-    //登录注册页面
+    //注册页面
+    {
+      path: '/register',
+      component: register
+    },
+    //登录页面
     {
       path: '/login',
       component: login
