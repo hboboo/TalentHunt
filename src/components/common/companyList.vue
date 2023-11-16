@@ -14,7 +14,14 @@
             </div>
             <div class="recruiter">
               <div class="recruiter-info">
-                <van-icon name="user-circle-o" />
+                <div class="hr-img">
+                  <van-image
+                  round
+                  width="0.8rem"
+                  height="0.8rem"
+                  src="https://img01.yzcdn.cn/vant/cat.jpeg"
+                  />
+                </div>
                 <span>许诗柔-人事</span>
               </div>
               <span class="company-address">{{ item.region }}-{{ item.place }}</span>
@@ -27,7 +34,7 @@
 </template>
 
 <script>
-import { Icon } from "vant";
+import { Icon, Image as VanImage } from "vant";
 export default {
   name: "CompanyList",
   data() {
@@ -45,6 +52,7 @@ export default {
   methods: {},
   components: {
     [Icon.name]: Icon,
+    [VanImage.name]: VanImage
   },
 };
 </script>
@@ -87,8 +95,15 @@ export default {
     .wh(100%,1.8rem,);
     align-items: center;
     .recruiter-info {
+      display: flex;
       .sc(0.7rem, #333);
       margin-left: 0.4rem;
+      .hr-img {
+        margin-top: 0.1rem;
+      }
+      span {
+        padding-left: 0.2rem;
+      }
     }
     .company-address {
       margin-left: 6.2rem;

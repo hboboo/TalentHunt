@@ -59,6 +59,7 @@ export default {
         username: this.username,
         password: this.password
       }).then(res => {
+        this.$router.push('/home')
         console.log(res);
       }).catch(error => {
         console.error('请求失败', error.message);

@@ -142,6 +142,7 @@ export default {
       margin-top: 0.5rem;
       text-indent: 1em;
       line-height: 1.5; 
+      padding-right: 0.2rem
     }
   }
 </style>

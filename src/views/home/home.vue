@@ -26,8 +26,8 @@
       </section>
       <section class="swipe-container">
         <van-swipe :autoplay="3000">
-          <van-swipe-item v-for="(image, index) in images" :key="index">
-            <img :src="image">
+          <van-swipe-item v-for="(item, index) in images" :key="index">
+            <img :src="item">
           </van-swipe-item>
         </van-swipe>
       </section>

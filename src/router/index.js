@@ -9,6 +9,7 @@ const jobDetails = () => import('../views/jobDetails/jobDetails.vue')
 const companyDetails = () => import('../views/jobDetails/companyDetails/companyDetails.vue')
 const register = () => import('../views/register/register.vue')
 const login = () => import('../views/login/login.vue')
+const issueJob = () => import('../views/issueJob/issueJob.vue')
 
 Vue.use(VueRouter)
 
@@ -57,6 +58,11 @@ const routes = [{
         }
       ]
     },
+    //发布岗位页面
+    {
+      path: '/issueJob',
+      component: issueJob
+    }
   ]
 }]
 
