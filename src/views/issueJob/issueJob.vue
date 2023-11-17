@@ -23,26 +23,26 @@
             :value="salary"
             label="薪资"
             placeholder="点击选择薪资区间"
-            @click="showPicker = true"
+            @click="showPickerSalary = true"
           />
-          <van-popup v-model="showPicker" position="bottom">
+          <van-popup v-model="showPickerSalary" position="bottom" round>
             <van-picker
               show-toolbar
-              :columns="columns"
-              @confirm="onConfirm"
-              @cancel="showPicker = false"
+              :columns="salaryArray"
+              @confirm="onConfirmSalary"
+              @cancel="showPickerSalary = false"
             />
           </van-popup>
-          <van-field name="switch" label="热门推荐">
+          <van-field name="hot" label="热门推荐">
             <template #input>
-              <van-switch v-model="switchChecked" size="20" />
+              <van-switch v-model="hot" size="20" />
             </template>
           </van-field>
-          <van-field name="radio" label="工作时间">
+          <van-field name="is_full_time" label="工作时间">
             <template #input>
-              <van-radio-group v-model="radio" direction="horizontal">
-                <van-radio name="1">全职</van-radio>
-                <van-radio name="2">实习</van-radio>
+              <van-radio-group v-model="is_full_time" direction="horizontal">
+                <van-radio :name="true">全职</van-radio>
+                <van-radio :name="false">实习</van-radio>
               </van-radio-group>
             </template>
           </van-field>
@@ -101,17 +101,17 @@
             readonly
             clickable
             name="学历要求"
-            :value="job_exoerience"
+            :value="job_education"
             label="学历要求"
             placeholder="点击选择学历区间"
-            @click="showPickerExoerience = true"
+            @click="showPickerEducation = true"
           />
-          <van-popup v-model="showPickerExoerience" position="bottom">
+          <van-popup v-model="showPickerEducation" position="bottom" round>
             <van-picker
               show-toolbar
-              :columns="exoerience"
-              @confirm="onConfirmExoerience"
-              @cancel="showPickerExoerience = false"
+              :columns="educationArray"
+              @confirm="onConfirmEducation"
+              @cancel="showPickerEducation = false"
             />
           </van-popup>
           <van-field
@@ -123,7 +123,7 @@
             placeholder="点击选择经验区间"
             @click="showPickerExperience = true"
           />
-          <van-popup v-model="showPickerExperience" position="bottom">
+          <van-popup v-model="showPickerExperience" position="bottom" round>
             <van-picker
               show-toolbar
               :columns="experience"
@@ -138,6 +138,151 @@
             placeholder="请输入你的职务"
             :rules="[{ required: true, message: '请填写你所在公司的职务' }]"
           />
+          <h2 class="separate">请完善你公司相关的信息</h2>
+          <van-field
+            v-model="companyName"
+            name="公司全称"
+            label="公司全称"
+            placeholder="请输入你公司全称"
+            :rules="[{ required: true, message: '请填写你所在公司的全称' }]"
+          />
+          <van-field
+            readonly
+            clickable
+            name="融资"
+            :value="financing"
+            label="融资"
+            placeholder="点击选择融资区间"
+            @click="showPickerFinancing = true"
+          />
+          <van-popup v-model="showPickerFinancing" position="bottom" round>
+            <van-picker
+              show-toolbar
+              :columns="financingArry"
+              @confirm="onConfirmFinancing"
+              @cancel="showPickerFinancing = false"
+            />
+          </van-popup>
+          <van-field
+            readonly
+            clickable
+            name="规模"
+            :value="scale_company"
+            label="规模"
+            placeholder="点击选择公司规模"
+            @click="showPickerScale = true"
+          />
+          <van-popup v-model="showPickerScale" position="bottom" round>
+            <van-picker
+              show-toolbar
+              :columns="ScaleArry"
+              @confirm="onConfirmScale"
+              @cancel="showPickerScale = false"
+            />
+          </van-popup>
+          <van-field
+            readonly
+            clickable
+            name="行业"
+            :value="industry"
+            label="行业"
+            placeholder="点击选择公司行业"
+            @click="showPickerIndustry = true"
+          />
+          <van-popup v-model="showPickerIndustry" position="bottom" round>
+            <van-picker
+              show-toolbar
+              :columns="industryArry"
+              @confirm="onConfirmIndustry"
+              @cancel="showPickerIndustry = false"
+            />
+          </van-popup>
+          <van-field
+            readonly
+            clickable
+            name="上班时间"
+            :value="start"
+            label="上班时间"
+            placeholder="点击选择时间"
+            @click="showPickerStart = true"
+          />
+          <van-popup v-model="showPickerStart" position="bottom" round>
+            <van-datetime-picker
+              type="time"
+              @confirm="onConfirmStart"
+              @cancel="showPickerStart = false"
+            />
+          </van-popup>
+          <van-field
+            readonly
+            clickable
+            name="下班时间"
+            :value="end"
+            label="下班时间"
+            placeholder="点击选择时间"
+            @click="showPickerEnd = true"
+          />
+          <van-popup v-model="showPickerEnd" position="bottom" round>
+            <van-datetime-picker
+              type="time"
+              @confirm="onConfirmEnd"
+              @cancel="showPickerEnd = false"
+            />
+          </van-popup>
+          <van-field
+            readonly
+            clickable
+            name="周末"
+            :value="rest_weekend"
+            label="周末"
+            placeholder="点击选择公司周末休息"
+            @click="showPickerWeekend = true"
+          />
+          <van-popup v-model="showPickerWeekend" position="bottom" round>
+            <van-picker
+              show-toolbar
+              :columns="weekendArry"
+              @confirm="onConfirmWeekend"
+              @cancel="showPickerWeekend = false"
+            />
+          </van-popup>
+          <van-field
+            readonly
+            clickable
+            name="加班"
+            :value="overtime"
+            label="加班"
+            placeholder="点击选择公司是否加班"
+            @click="showPickerOvertime = true"
+          />
+          <van-popup v-model="showPickerOvertime" position="bottom" round>
+            <van-picker
+              show-toolbar
+              :columns="overtimeArry"
+              @confirm="onConfirmOvertime"
+              @cancel="showPickerOvertime = false"
+            />
+          </van-popup>
+          <van-field
+            v-model="company_address"
+            rows="2"
+            autosize
+            label="地址"
+            type="textarea"
+            maxlength="30"
+            placeholder="请输入公司地址"
+            show-word-limit
+          />
+          <van-field
+            v-model="company_introduction"
+            rows="2"
+            autosize
+            label="介绍"
+            type="textarea"
+            maxlength="100"
+            placeholder="请输入有关公司介绍"
+            show-word-limit
+          />
           <div style="margin: 16px;">
             <van-button round block type="info" native-type="submit">提交</van-button>
           </div>
@@ -148,7 +293,7 @@
 </template>
 
 <script>
-import {Icon, Picker, Form, Button, Field, Popup, Switch, RadioGroup, Radio} from 'vant';
+import {Icon, Picker, Form, Button, Field, Popup, Switch, RadioGroup, Radio,  DatetimePicker} from 'vant';
 export default {
   name: 'IssueJob',
 
@@ -156,23 +301,45 @@ export default {
     return {
       jobname: '',          //岗位名称
       salary: '',           //薪资
-      showPicker: false,    //是否显示选择器
-      columns: ['3k以下','3-5k','5-10k','10-20k','20k以上'],  //临时薪资选择器数据
-      switchChecked: false,      //开关按钮
-      radio: '1',             //是否全职的单选框
+      showPickerSalary: false,    //薪资选择器
+      salaryArray: ['3k以下','3-5k','5-10k','10-20k','20k以上'],  //薪资选择器数据
+      hot: false,      //是否热门
+      is_full_time: true,             //是否全职的单选框
       short_company_name: '',  //公司简称
       city: '',                  //市
       district: '',              //区
       job_tag: '',               //岗位标签
       job_responsibility: '',     //工作职责
       job_require: '',           //任职要求
-      showPickerExoerience: false,    //是否显示学历选择器
-      job_exoerience: '' ,    //学历
-      exoerience: ['初中以下', '中专', '高中', '大专', '本科', '硕士', '博士'],
+      showPickerEducation: false,    //是否显示学历选择器
+      job_education: '' ,    //学历
+      educationArray: ['初中以下', '中专', '高中', '大专', '本科', '硕士', '博士'],
       job_experience: '',    //工作经验
       showPickerExperience: false,    //是否显示经验选择器
       experience: ['在校生','应届生','1年以内','1-3年','3-5年','5-10年','10年以上'],
       recruiter: '',                //发布者的职务
+      financing: '',                //融资情况
+      showPickerFinancing: false,   //显示融资选择器
+      financingArry: ['未融资','天使轮','A轮','B轮','C轮','上市'],
+      companyName: '',             //公司全称
+      scale_company: '',           //公司规模的值
+      showPickerScale: false,        //对应它的选择器开关
+      ScaleArry: ['0-20人','20-99人','100-499人','500-999人','1000人以上'],
+      industry: '',     //公司行业的值
+      showPickerIndustry: false,
+      industryArry: ['互联网', '金融', '教育', '医疗', '电商', '制造业', '媒体', '房地产'],
+      start: '',          //上班时间
+      showPickerStart: false,   //显示时间选择器
+      end: '',          //上班时间
+      showPickerEnd: false,  //显示时间选择器
+      rest_weekend: '',  //  周末休息的值
+      showPickerWeekend: false ,
+      weekendArry: ['双休','单休','大小周'],
+      overtime: '',   //加班情况
+      showPickerOvertime: false, 
+      overtimeArry: ['不加班','偶尔加班','经常加班'],
+      company_address: '', //公司地址
+      company_introduction: '',
     };
   },
 
@@ -182,25 +349,97 @@ export default {
 
   methods: {
     //提交表单
-    onSubmit(values) {
-      console.log('submit', values);
-    },
-    //选择器的值
-    onConfirm(value) {
+    onSubmit() {
+        // 将整个表单数据提交到后端
+    const formData = {
+      jobname: this.jobname,
+      salary: this.salary,
+      hot: this.hot,
+      is_full_time: this.is_full_time,
+      short_company_name: this.short_company_name,
+      city: this.city,
+      district: this.district,
+      job_tag: this.job_tag.split('，').map(item => item.trim()), // 处理岗位标签为数组
+      job_responsibility: this.job_responsibility.split('，').map(item => item.trim()), // 处理工作职责为数组
+      job_require: this.job_require.split('，').map(item => item.trim()), // 处理任职要求为数组
+      job_education: this.job_education,
+      job_experience: this.job_experience,
+      recruiter: this.recruiter,
+      financing: this.financing,
+      companyName: this.companyName,
+      scale_company: this.scale_company,
+      industry: this.industry,
+      company_address: this.company_address,
+      company_introduction: this.company_introduction,
+      start: this.start,
+      end: this.end,
+      rest_weekend: this.rest_weekend,
+      overtime: this.overtime,
+    };
+    // 发送 POST 请求到后端
+    this.$http.post('/submit', formData)
+    .then(res => {
+      console.log(res.data); // 输出后端返回的数据
+    })
+    .catch(error => {
+      console.error('请求失败', error.message);
+    });
+  },
+
+
+    //薪资选择器
+    onConfirmSalary(value) {
       this.salary = value;
-      this.showPicker = false;
+      this.showPickerSalary = false;
     },
     //学历选择器
-    onConfirmExoerience(value) {
-      this.job_exoerience = value;
-      this.showPickerExoerience = false;
+    onConfirmEducation(value) {
+      this.job_education = value;
+      this.showPickerEducation = false;
     },
     //工作经验选择器
     onConfirmExperience(value) {
       this.job_experience = value;
       this.showPickerExperience = false;
     },
+    //公司融资情况
+    onConfirmFinancing(value) {
+      this.financing = value;
+      this.showPickerFinancing = false;
+    },
+    //公司规模情况
+    onConfirmScale(value) {
+      this.scale_company = value;
+      this.showPickerScale = false;
+    },
+    //公司所在行业情况
+    onConfirmIndustry(value) {
+      this.industry = value;
+      this.showPickerIndustry = false;
+    },
+    //上班时间
+    onConfirmStart(time) {
+      this.start = time;
+      this.showPickerStart = false;
+    },
+    //下班时间
+    onConfirmEnd(time) {
+      this.end = time;
+      this.showPickerEnd = false;
+    },
+    //周末上班情况
+    onConfirmWeekend(value) {
+      this.rest_weekend = value;
+      this.showPickerWeekend = false;
+    },
+    //加班情况
+    onConfirmOvertime(value) {
+      this.overtime = value;
+      this.showPickerOvertime = false;
+    },
   },
+
+  
 
   components: {
     [Icon.name]: Icon,
@@ -212,6 +451,7 @@ export default {
     [Switch.name]: Switch,
     [RadioGroup.name]: RadioGroup,
     [Radio.name]: Radio,
+    [DatetimePicker.name]: DatetimePicker,
   }
 };
 </script>
@@ -235,5 +475,9 @@ export default {
   .form {
     padding: 0 0.7rem;
     margin-top: 0.2rem;
+    .separate{
+      .sc(0.6rem, #2b78ca);
+      padding: 0.5rem 0;
+    }
   }
 </style>
