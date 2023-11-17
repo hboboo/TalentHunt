@@ -48,13 +48,17 @@ const routes = [{
     },
     //招聘岗位信息详情页
     {
-      path: '/jobDetails',
+      path: '/jobDetails/:id',
+      name: 'jobDetails',
       component: jobDetails,
+      props: true,
       children: [
         //公司详情页
         {
           path: 'companyDetails',
-          component: companyDetails
+          name: 'companyDetails',
+          component: companyDetails,
+          props: true,
         }
       ]
     },

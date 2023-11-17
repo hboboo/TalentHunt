@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div v-if="jobDetails">
     <section class="job-container">
       <section class="navbar-top-container">
-        <van-nav-bar left-arrow >
+        <van-nav-bar left-arrow @click-left="handleGoBack">
           <template #right>
             <div>
               <van-icon name="star-o" v-show="!isCollected" @click="collection"/>
@@ -13,21 +13,21 @@
       </section>
       <section class="header-container">
         <div class="header-info">
-          <h2>招聘信息</h2>
-          <span>11-17k</span>
+          <h2 >{{jobDetails.jobname}}</h2>
+          <span>{{jobDetails.salary}}</span>
         </div>
         <div class="header-ask">
           <div>
             <van-icon name="map-marked" color="#aab2ba"/>
-            <span>黄埔·厂商</span>
+            <span>{{jobDetails.city}}·{{jobDetails.district}}</span>
           </div>
           <div>
             <van-icon name="bag" color="#aab2ba"/>
-            <span>1-3年</span>
+            <span>{{jobDetails.job_experience}}</span>
           </div>
           <div>
             <van-icon name="award" color="#aab2ba"/>
-            <span>大专</span>
+            <span>{{jobDetails.job_education}}</span>
           </div>
         </div>
         <div class="header-hr-info">
@@ -41,7 +41,7 @@
           </div>
           <div class="hr">
             <span class="hr-name">陶文婷</span>
-            <span class="hr-company">厂商·HR</span>
+            <span class="hr-company">{{jobDetails.short_company_name}}·{{jobDetails.recruiter}}</span>
           </div>
           <div class="hr-link">
             <van-icon name="arrow" color="#989ea3"/>
@@ -52,36 +52,23 @@
         <div class="job-header">
           <h1>岗位详情</h1>
           <ul class="job-ul">
-            <li class="job-tag">手游开发</li>
-            <li class="job-tag">手游开发</li>
-            <li class="job-tag">手游开发试一下哈哈</li>
+            <li class="job-tag" v-for="item in jobDetails.job_tag" :key="item">{{item}}</li>
           </ul>
         </div>
         <div class="job-duties">
           <h2 >岗位职责：</h2>
           <ul>
-            <li class="job-li">1.使用c#进行客户端开发我是来柿子树哈哈哈</li>
-            <li class="job-li">1.使用c#进行客户端开发</li>
-            <li class="job-li">1.使用c#进行客户端开发</li>
-            <li class="job-li">1.使用c#进行客户端开发</li>
-            <li class="job-li">1.使用c#进行客户端开发</li>
-            <li class="job-li">1.使用c#进行客户端开发</li>
+            <li class="job-li" v-for="item in jobDetails.job_responsibility" :key="item">{{item}}</li>
           </ul>
         </div>
         <div class="job-requirements">
           <h2>任职要求：</h2>
           <ul>
-            <li class="job-li">1.2年以上开发经验</li>
-            <li class="job-li">1.2年以上开发经验</li>
-            <li class="job-li">1.2年以上开发经验</li>
-            <li class="job-li">1.2年以上开发经验</li>
-            <li class="job-li">1.2年以上开发经验</li>
-            <li class="job-li">1.2年以上开发经验</li>
-            <li class="job-li">1.2年以上开发经验</li>
+            <li class="job-li" v-for="item in jobDetails.job_require" :key="item">{{item}}</li>
           </ul>
         </div>
       </section>
-      <router-link to='/jobDetails/companyDetails'>
+      <router-link :to="{ name: 'companyDetails' }">
         <section class="company-container">
         <div class="company-img">
           <van-image
@@ -92,11 +79,11 @@
           />
         </div>
         <div class="company-info">
-          <h3>广州河马游戏科技有限公司</h3>
+          <h3>{{jobDetails.company.companyName}}</h3>
           <div class="company">
-            <span>A轮·</span>
-            <span>100-499人·</span>
-            <span>游戏</span>
+            <span>{{jobDetails.company.financing}}·</span>
+            <span>{{jobDetails.company.scale_company}}·</span>
+            <span>{{jobDetails.company.industry}}</span>
           </div>
         </div>
         <div class="company-link">
@@ -112,7 +99,7 @@
         </div>
       </section>
       <transition mode="out-in" name="fade">
-        <router-view></router-view>
+        <router-view :jobDetails="jobDetails"></router-view>
       </transition>
     </section>
   </div>
@@ -122,17 +109,20 @@
 import {Icon, Toast, NavBar, Image} from 'vant';
 export default {
   name: 'JobDetails',
-
+ 
   data() {
     return {
-      isCollected: false,
+      isCollected: false,  // 收藏
+      jobDetails: null,  // 存储岗位详情的数据
     };
   },
 
   mounted() {
     
   },
-
+  created() {
+    this.fetchJobDetauls()
+  },
   methods: {
     collection(){
       this.isCollected = !this.isCollected;
@@ -141,7 +131,22 @@ export default {
     uncollection(){
       this.isCollected = !this.isCollected;
       Toast.fail('取消收藏');
-    }
+    },
+    fetchJobDetauls() {
+    // 在组件加载完成后，获取路由参数中的id
+    const jobId = this.$route.params.id;
+    this.$http.get(`/job/${jobId}`)
+      .then(response => {
+        this.jobDetails = response.data;  
+      })
+      .catch(error => {
+        console.error('获取岗位详情失败', error);
+      });
+    },
+    handleGoBack() {
+      // 返回上一级路由
+      this.$router.go(-1);
+    },
   },
 
   components: {

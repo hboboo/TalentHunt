@@ -2,15 +2,15 @@
   <div>
     <section class="list-container">
       <ul>
-        <router-link to='/jobDetails'  v-for="item in list" :key="item._id">
+        <router-link :to="{ name: 'jobDetails', params: { id: item._id }}"  v-for="item in list" :key="item._id">
           <li class="list-container-li">
             <div class="header">
-              <h3 class="ellipsis">{{ item.title }}</h3>
+              <h3 class="ellipsis">{{ item.jobname }}</h3>
               <span>{{ item.salary }}</span>
             </div>
             <div class="describe">
-              <span>{{ item.company_name }}</span>
-              <span>{{ item.company_capital }}</span>
+              <span>{{ item.short_company_name }}</span>
+              <span v-if="item.company">{{ item.company.financing}}</span>
             </div>
             <div class="recruiter">
               <div class="recruiter-info">
@@ -22,9 +22,9 @@
                   src="https://img01.yzcdn.cn/vant/cat.jpeg"
                   />
                 </div>
-                <span>许诗柔-人事</span>
+                <span>许诗柔-{{item.recruiter}}</span>
               </div>
-              <span class="company-address">{{ item.region }}-{{ item.place }}</span>
+              <span class="company-address">{{ item.city }}-{{ item.district }}</span>
             </div>
           </li>
         </router-link>
@@ -92,6 +92,7 @@ export default {
   }
   .recruiter {
     display: flex;
+    position: relative;
     .wh(100%,1.8rem,);
     align-items: center;
     .recruiter-info {
@@ -106,7 +107,8 @@ export default {
       }
     }
     .company-address {
-      margin-left: 6.2rem;
+      position: absolute;
+      right: 1.5rem;
       .sc(0.6rem, #666);
       font-weight: 500;
     }

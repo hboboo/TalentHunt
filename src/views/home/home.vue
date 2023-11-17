@@ -12,7 +12,7 @@
           <van-icon name="search" class="search"/>
         </div>
         <div class="recommendation-title">
-          <span :class="{active_content_type: content == 'recommendation'}" @click="selectContent('recommendation')">全部</span>
+          <span :class="{active_content_type: content == 'complete'}" @click="selectContent('complete')">全部</span>
           <span :class="{active_content_type: content == 'popular'}" @click="selectContent('popular')">热门</span>
           <div class="button-container">
             <div>
@@ -61,8 +61,8 @@ export default {
         'https://img01.yzcdn.cn/vant/apple-1.jpg',
         'https://img01.yzcdn.cn/vant/apple-2.jpg',
       ],
-      jobList: [], //请求来的列表
-      jobType: '', 
+      jobList: [], //渲染列表
+      jobType: '',  //储存第一次筛选的结果
     };
   },
   created() {
@@ -84,8 +84,8 @@ export default {
     //请求招聘列表
     getRecommendation (isFullTime) {
       const isFullTimeParam = isFullTime ? 'true' : 'false'; 
-      this.content = 'recommendation'
-      this.$http.get('/job/find', {
+      this.content = 'complete'
+      this.$http.get('/job', {
         params: {
           is_full_time: isFullTimeParam
         }
@@ -99,7 +99,7 @@ export default {
     selectContent (contentType) {
       this.content = contentType   //更新样式
       switch (contentType) {
-        case 'recommendation':
+        case 'complete':
           if (this.jobType === 'career') {
               this.getRecommendation(true); // 传入全职参数  
             } else {

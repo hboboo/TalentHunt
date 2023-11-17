@@ -2,11 +2,11 @@
   <div class="company-details-container">
     <section class="top-container">
       <div class="company-info">
-        <h3>广州河马游戏科技有限公司</h3>
+        <h3>{{jobDetails.company.companyName}}</h3>
         <div class="company">
-          <span>A轮·</span>
-          <span>100-499人·</span>
-          <span>游戏</span>
+          <span>{{jobDetails.company.financing}}·</span>
+          <span>{{jobDetails.company.scale_company}}·</span>
+          <span>{{jobDetails.company.industry}}</span>
         </div>
       </div>
       <div class="company-img">
@@ -21,24 +21,24 @@
     <section class="company-condition-container">
       <div> 
         <van-icon name="clock" color="#fff"/>
-        <span>上午09:30-下午07:00</span>
+        <span>{{jobDetails.company.workingHours.start}}-{{jobDetails.company.workingHours.end}}</span>
       </div>
       <div>
         <van-icon name="card" color="#fff"/>
-        <span>双休</span>
+        <span>{{jobDetails.company.rest_weekend}}</span>
       </div>
       <div>
         <van-icon name="todo-list" color="#fff"/>
-        <span>偶尔加班</span>
+        <span>{{jobDetails.company.overtime}}</span>
       </div>
     </section>
     <section class="company-address-container">
       <h1>公司地址</h1>
-      <span>广州海珠区小米大厦9楼我们是一家专注于推动科技创新的公司</span>
+      <span>{{jobDetails.company.company_address}}</span>
     </section>
     <section class="company-introduce-container">
       <h1>公司介绍</h1>
-      <p>欢迎来到创新科技，我们是一家专注于推动科技创新的公司。致力于为客户提供卓越的解决方案，我们的团队充满活力、创意无限。通过不断追求卓越和技术创新，我们助力企业实现业务增长和数字化转型。让我们携手共创美好未来！</p>
+      <p>{{jobDetails.company.company_introduction}}</p>
     </section>
   </div>
 </template>
@@ -47,7 +47,12 @@
 import {Image, Icon} from 'vant';
 export default {
   name: 'CompanyDetails',
-
+  props: {
+    jobDetails: {
+      type: Object,
+      default: null,
+    },
+  },
   data() {
     return {
       
