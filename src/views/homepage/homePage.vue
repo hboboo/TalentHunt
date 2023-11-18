@@ -19,14 +19,15 @@
         <van-cell title="我的收藏" is-link size="large"/>
         <van-cell title="我的信息" is-link size="large"/>
         <van-cell title="关于软件" is-link size="large"/>
+        <van-cell title="退出账号" is-link size="large" @click="exit"/>
         </div>
       </section>
       <section class="tabbar-container">
-        <van-tabbar v-model="tabbarActive">
-          <van-tabbar-item icon="home-o">职位</van-tabbar-item>
-          <van-tabbar-item icon="search">标签</van-tabbar-item>
-          <van-tabbar-item icon="friends-o">标签</van-tabbar-item>
-          <van-tabbar-item icon="setting-o">我的</van-tabbar-item>
+        <van-tabbar  route>
+          <van-tabbar-item replace icon="home-o" to="/home">职位</van-tabbar-item>
+          <van-tabbar-item replace icon="search">标签</van-tabbar-item>
+          <van-tabbar-item replace icon="friends-o">标签</van-tabbar-item>
+          <van-tabbar-item replace icon="setting-o" to="/homePage" class="van-tabbar-item--active">我的</van-tabbar-item>
         </van-tabbar>
       </section>
     </section>
@@ -34,22 +35,64 @@
 </template>
 
 <script>
-import { Image as VanImage, Cell, Tabbar,TabbarItem} from 'vant';
+import { Image as VanImage, Cell, Tabbar,TabbarItem, Dialog} from 'vant';
 export default {
   name: 'HomePage',
 
   data() {
     return {
-      tabbarActive: 0,  //tabbar状态栏索引
+      
     };
   },
 
   mounted() {
-    
+    this.checkLoginStatus(); 
   },
 
   methods: {
-    
+    checkLoginStatus() {
+      // 使用Vuex中的getter获取用户登录状态
+      const isAuthenticated = this.$store.getters.isAuthenticated;
+
+      // 读取本地存储中的 token
+      const storedToken = localStorage.getItem('token');
+
+      // 如果本地存储中存在 token，并且用户未登录，则更新 Vuex 状态
+      if (storedToken && !isAuthenticated) {
+        const storedRole = localStorage.getItem('role'); // 如果有存储用户角色，也可以取出
+        this.$store.dispatch('login', { isAuthenticated: true, token: storedToken, role: storedRole });
+
+        // 可以执行其他操作，例如获取用户信息等
+        Dialog.alert({
+          title: '已识别到账号',
+          message: '欢迎回来~',
+        });
+        } else if (!isAuthenticated) {
+        // 如果用户未登录，则执行相应的操作，例如跳转到登录页面
+        Dialog.alert({
+          title: '未识别到账号',
+          message: '账号还没登陆快去登录吧~',
+        }).then(() => {
+          this.$router.push('/login');
+        });
+      }
+    },
+
+    //退出账号
+    exit () {
+      Dialog.confirm({
+        title: '退出账号',
+        message: '确定要退出账号吗？',
+      })
+      .then(() => {
+         // 用户点击确认，调用退出账号的操作
+        this.$store.dispatch('logout'); 
+        this.$router.push('/login');
+      })
+      .catch(() => {
+        // on cancel
+      });
+    }
   },
   components: {
     [VanImage.name]: VanImage,

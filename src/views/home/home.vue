@@ -33,11 +33,11 @@
       </section>
       <company-list :list='jobList'></company-list>
       <section class="tabbar-container">
-        <van-tabbar v-model="tabbarActive">
-          <van-tabbar-item icon="home-o">职位</van-tabbar-item>
-          <van-tabbar-item icon="search">标签</van-tabbar-item>
-          <van-tabbar-item icon="friends-o">标签</van-tabbar-item>
-          <van-tabbar-item icon="setting-o">我的</van-tabbar-item>
+        <van-tabbar  route>
+          <van-tabbar-item replace icon="home-o" to="/home">职位</van-tabbar-item>
+          <van-tabbar-item replace icon="search" to="/search">标签</van-tabbar-item>
+          <van-tabbar-item replace icon="friends-o">标签</van-tabbar-item>
+          <van-tabbar-item replace icon="setting-o"  to="/homePage">我的</van-tabbar-item>
         </van-tabbar>
       </section>
     </section>
@@ -52,7 +52,6 @@ export default {
   
   data() {
     return {
-      tabbarActive: 0,  //tabbar状态栏索引
       changeShow: 'career', //默认选取全职
       content: '',  //默认选取全部
       city: '广州', //按钮
@@ -113,7 +112,6 @@ export default {
       }
     },
 
-  
   },
 
   components: {

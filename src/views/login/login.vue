@@ -59,8 +59,14 @@ export default {
         username: this.username,
         password: this.password
       }).then(res => {
-        this.$router.push('/home')
-        console.log(res);
+        if (res.data.message === '登录成功') {
+          // 登录成功后调用Vuex的action更新状态
+          this.$store.dispatch('login', { isAuthenticated: true, token: res.data.token, role: res.data.role });
+          // 跳转到首页或其他需要跳转的页面
+          this.$router.push('/home');
+        } else {
+          console.error('登录失败', res.data.message);
+        }
       }).catch(error => {
         console.error('请求失败', error.message);
       })

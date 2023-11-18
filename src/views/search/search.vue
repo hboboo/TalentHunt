@@ -37,11 +37,11 @@
         <company-list></company-list>
       </section>
       <section class="tabbar-container">
-        <van-tabbar v-model="tabbarActive">
-          <van-tabbar-item icon="home-o">职位</van-tabbar-item>
-          <van-tabbar-item icon="search">标签</van-tabbar-item>
-          <van-tabbar-item icon="friends-o">标签</van-tabbar-item>
-          <van-tabbar-item icon="setting-o">我的</van-tabbar-item>
+       <van-tabbar  route>
+          <van-tabbar-item replace icon="home-o"  to="/home">职位</van-tabbar-item>
+          <van-tabbar-item replace icon="search" to="/search">标签</van-tabbar-item>
+          <van-tabbar-item replace icon="friends-o">标签</van-tabbar-item>
+          <van-tabbar-item replace icon="setting-o" to="/homePage">我的</van-tabbar-item>
         </van-tabbar>
       </section>
     </section>
@@ -59,7 +59,6 @@ export default {
       value: '', //搜索内容的值
       searchResults : true,  //搜索结果
       searchHistory: true,  //搜索历史
-      tabbarActive: 0,  //tabbar状态栏索引
     };
   },
 
