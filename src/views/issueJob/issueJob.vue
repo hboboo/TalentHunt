@@ -283,6 +283,11 @@
             placeholder="请输入有关公司介绍"
             show-word-limit
           />
+          <van-field name="companyLogo" label="公司头像" >
+            <template #input>
+              <van-uploader  v-model="companyLogo" multiple :max-count="1" :after-read="afterRead" ref='file'/>
+            </template>
+          </van-field>
           <div style="margin: 16px;">
             <van-button round block type="info" native-type="submit">提交</van-button>
           </div>
@@ -293,7 +298,7 @@
 </template>
 
 <script>
-import {Icon, Picker, Form, Button, Field, Popup, Switch, RadioGroup, Radio,  DatetimePicker} from 'vant';
+import {Icon, Picker, Form, Button, Field, Popup, Switch, RadioGroup, Radio,  DatetimePicker,Uploader} from 'vant';
 export default {
   name: 'IssueJob',
 
@@ -340,6 +345,7 @@ export default {
       overtimeArry: ['不加班','偶尔加班','经常加班'],
       company_address: '', //公司地址
       company_introduction: '',
+      companyLogo: [],  //公司头像
     };
   },
 
@@ -348,34 +354,42 @@ export default {
   },
 
   methods: {
-    //提交表单
-    onSubmit() {
-        // 将整个表单数据提交到后端
-    const formData = {
-      jobname: this.jobname,
-      salary: this.salary,
-      hot: this.hot,
-      is_full_time: this.is_full_time,
-      short_company_name: this.short_company_name,
-      city: this.city,
-      district: this.district,
-      job_tag: this.job_tag.split('，').map(item => item.trim()), // 处理岗位标签为数组
-      job_responsibility: this.job_responsibility.split('，').map(item => item.trim()), // 处理工作职责为数组
-      job_require: this.job_require.split('，').map(item => item.trim()), // 处理任职要求为数组
-      job_education: this.job_education,
-      job_experience: this.job_experience,
-      recruiter: this.recruiter,
-      financing: this.financing,
-      companyName: this.companyName,
-      scale_company: this.scale_company,
-      industry: this.industry,
-      company_address: this.company_address,
-      company_introduction: this.company_introduction,
-      start: this.start,
-      end: this.end,
-      rest_weekend: this.rest_weekend,
-      overtime: this.overtime,
-    };
+    // 提交表单
+onSubmit() {
+  // 创建一个 FormData 对象，用于发送文件
+  const formData = new FormData();
+
+    // 添加表单数据
+    formData.append('jobname', this.jobname);
+    formData.append('salary', this.salary);
+    formData.append('hot', this.hot);
+    formData.append('is_full_time', this.is_full_time);
+    formData.append('short_company_name', this.short_company_name);
+    formData.append('city', this.city);
+    formData.append('district', this.district);
+    formData.append('job_tag', this.job_tag.split('，').map(item => item.trim())); // 处理岗位标签为数组
+    formData.append('job_responsibility', this.job_responsibility.split('，').map(item => item.trim())); // 处理工作职责为数组
+    formData.append('job_require', this.job_require.split('，').map(item => item.trim())); // 处理任职要求为数组
+    formData.append('job_education', this.job_education);
+    formData.append('job_experience', this.job_experience);
+    formData.append('recruiter', this.recruiter);
+    formData.append('financing', this.financing);
+    formData.append('companyName', this.companyName);
+    formData.append('scale_company', this.scale_company);
+    formData.append('industry', this.industry);
+    formData.append('company_address', this.company_address);
+    formData.append('company_introduction', this.company_introduction);
+    formData.append('start', this.start);
+    formData.append('end', this.end);
+    formData.append('rest_weekend', this.rest_weekend);
+    formData.append('overtime', this.overtime);
+
+    // 添加图片数据
+    if (this.companyLogo.length > 0) {
+      // 如果有选择图片，将图片文件添加到 FormData 中
+      formData.append('companyLogo', this.companyLogo[0].file);
+    }
+
     // 发送 POST 请求到后端
     this.$http.post('/submit', formData)
     .then(res => {
@@ -386,6 +400,10 @@ export default {
     });
   },
 
+  afterRead(file) {
+    console.log(file);
+  },
+  
 
     //薪资选择器
     onConfirmSalary(value) {
@@ -452,6 +470,7 @@ export default {
     [RadioGroup.name]: RadioGroup,
     [Radio.name]: Radio,
     [DatetimePicker.name]: DatetimePicker,
+    [Uploader.name]: Uploader,
   }
 };
 </script>

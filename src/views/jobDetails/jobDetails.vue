@@ -75,7 +75,7 @@
             width="2rem"
             height="2rem"
             fit="cover"
-            src="https://img01.yzcdn.cn/vant/cat.jpeg"
+            :src="'http://localhost:3000' + jobDetails.company.companyLogo"
           />
         </div>
         <div class="company-info">
@@ -147,6 +147,14 @@ export default {
       // 返回上一级路由
       this.$router.go(-1);
     },
+
+    createImageURL(binaryData) {
+      if (!binaryData) return '';
+      console.log(binaryData);
+      const blob = new Blob([binaryData], { type: 'image/png' });
+      return URL.createObjectURL(blob);
+    },
+  
   },
 
   components: {
