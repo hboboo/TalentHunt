@@ -16,7 +16,7 @@
         <form @submit.prevent="submitForm">
           <div class="user-name">
             <van-icon name="envelop-o" />
-            <input type="text" placeholder="用户名" required class="input-type" v-model="username">
+            <input type="text" placeholder="用户名" required class="input-type" v-model="account">
           </div>
           <div class="user-password">
             <van-icon name="lock" color="#4e5b60"/>
@@ -38,7 +38,7 @@ export default {
 
   data() {
     return {
-      username: '',
+      account: '',
       password: '',
     };
   },
@@ -56,7 +56,7 @@ export default {
     //登录
     submitForm () {
       this.$http.post('/user/login', {
-        username: this.username,
+        account: this.account,
         password: this.password
       }).then(res => {
         if (res.data.message === '登录成功') {

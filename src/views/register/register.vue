@@ -7,17 +7,30 @@
       <form @submit.prevent="submitForm">
         <div class="user-name">
           <van-icon name="envelop-o" />
-          <input type="text" placeholder="用户名" required class="input-type" v-model="username">
+          <input type="text" placeholder="账号" required class="input-type" v-model="account">
         </div>
         <div class="user-password">
           <van-icon name="lock" color="#4e5b60"/>
           <input type="password" placeholder="密码" required class="input-type" v-model="password">
+        </div>
+        <div class="hint">
+          <h3>完善注册信息</h3>
         </div>
         <div class="user-type">
           <van-radio-group v-model="role" direction="horizontal">
             <van-radio name="recruiter" icon-size="0.9rem">招聘者</van-radio>
             <van-radio name="jobSeeker" icon-size="0.9rem">应聘者</van-radio>
           </van-radio-group>
+        </div>
+        <div class="user-info">
+          <div class="user-info-name">
+            <h2>姓名</h2>
+            <input type="text" placeholder="输入姓名" required  v-model="username" class="name-type">
+          </div>
+          <div class="user-info-logo">
+            <h2>头像</h2>
+            <van-uploader  v-model="userLogo" multiple :max-count="1"  ref='file' class="log"/>
+          </div>
         </div>
         <div class="submit">
           <button type="submit">注册</button>
@@ -28,15 +41,17 @@
 </template>
 
 <script>
-import {Form, Field, RadioGroup, Radio, Icon} from 'vant'
+import {Form, Field, RadioGroup, Radio, Icon, Uploader} from 'vant'
 export default {
   name: 'Login',
 
   data() {
     return {
-      username: '',
-      password: '',
-      role: 'jobSeeker'
+      account: '',     //账号
+      password: '',    //密码
+      role: 'jobSeeker',      //角色
+      username: '',           //姓名
+      userLogo: []           //头像
     };
   },
 
@@ -46,15 +61,27 @@ export default {
 
   methods: {
     submitForm () {
-      this.$http.post('/user', {
-        username: this.username,
-        password: this.password,
-        role: this.role
-      }).then(res => {
-        console.log(res);
-      }).catch(error => {
-        console.error('请求失败', error.message);
+      const formData = new FormData();
+
+      formData.append('account', this.account);
+      formData.append('password', this.password);
+      formData.append('role', this.role);
+      formData.append('username', this.username);
+      
+      // 添加图片数据
+      if (this.userLogo.length > 0) {
+        // 如果有选择图片，将图片文件添加到 FormData 中
+        formData.append('userLogo', this.userLogo[0].file);
+      }
+
+       // 发送 POST 请求到后端
+      this.$http.post('/user', formData)
+      .then(res => {
+        console.log(res.data); // 输出后端返回的数据
       })
+      .catch(error => {
+        console.error('请求失败', error.message);
+      });
     }
   },
 
@@ -64,6 +91,7 @@ export default {
     [RadioGroup.name]: RadioGroup,
     [Radio.name]: Radio,
     [Icon.name]: Icon,
+    [Uploader.name]: Uploader,
   }
 };
 </script>
@@ -93,10 +121,8 @@ export default {
     top: 31%;
     left: 10%;
     input::placeholder {
-    /* 设置字体颜色 */
     color: #888;
-    /* 设置字体大小 */
-    font-size: 14px; /* 根据需要调整大小 */
+    font-size: 14px; 
     }
     .input-type {
       margin-left: 0.5rem;
@@ -106,9 +132,14 @@ export default {
     .user-password {
       margin-top: 1.2rem;
     }
+    .hint {
+      .sc(0.7rem, #0e7da3);
+      margin-top: 0.6rem;
+      font-weight: 600;
+    }
     .user-type {
-      margin-top: 1.5rem;
-      margin-left: 1.7rem;
+      margin-top: 0.9rem;
+      margin-left: 1.4rem;
       .sc(0.9rem, #000);
       font-weight: 600;
       /deep/.van-radio__icon--round .van-icon {
@@ -119,13 +150,32 @@ export default {
       }
     }
     .submit {
-      margin-top: 2.1rem;
+      margin-top: 0.7rem;
       margin-left: 4.3rem;
       button {
         background-color: #1a7cb5;
         color: white;
         padding: 0.3rem 0.8rem; 
         border-radius: 0.7rem;
+      }
+    }
+    .user-info {
+      margin-top: 1rem;
+      .name-type {
+        margin-left: 2.2rem;
+        width: 9.6rem;
+        border-bottom: solid 1px #fff;
+        background: transparent;
+      }
+      h2 {
+        .sc(0.8rem, #666);
+      }
+      .user-info-logo {
+        margin-top: 0.3rem;
+        .log {
+          margin-top: 0.5rem;
+          margin-left: 2.1rem;
+        }
       }
     }
   }

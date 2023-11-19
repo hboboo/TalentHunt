@@ -30,6 +30,12 @@
           <van-tabbar-item replace icon="setting-o" to="/homePage" class="van-tabbar-item--active">我的</van-tabbar-item>
         </van-tabbar>
       </section>
+      <div v-if="userInfoData">
+      <h2>{{ userInfoData.username }}</h2>
+      <p>账号：{{ userInfoData.account }}</p>
+      <p>角色：{{ userInfoData.userLogo }}</p>
+      <!-- 其他用户信息... -->
+    </div>
     </section>
   </div>
 </template>
@@ -41,12 +47,13 @@ export default {
 
   data() {
     return {
-      
+      userInfoData: null
     };
   },
 
   mounted() {
     this.checkLoginStatus(); 
+    this.getUserInfo()
   },
 
   methods: {
@@ -92,7 +99,23 @@ export default {
       .catch(() => {
         // on cancel
       });
-    }
+    },
+    // 获取用户详细信息
+    getUserInfo() {
+      // 从 Vuex 中获取 token
+      const token = this.$store.getters.token;
+
+      // 发起获取用户信息的请求
+      this.$http.get('/user/info', { headers: { Authorization: `Bearer ${token}` } })
+        .then(response => {
+          // 请求成功，更新 data 中的属性
+          this.userInfoData = response.data;
+        })
+        .catch(error => {
+          // 请求失败，处理错误
+          console.error('获取用户信息失败', error);
+        });
+    },
   },
   components: {
     [VanImage.name]: VanImage,

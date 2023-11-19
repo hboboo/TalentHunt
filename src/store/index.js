@@ -29,6 +29,7 @@ export default new Vuex.Store({
        // 将 token 存储到本地存储中
       localStorage.setItem('token', token);
       localStorage.setItem('role', role);
+      
     },
     logout({ commit }) {
       commit('setAuthentication', { isAuthenticated: false, token: null, role: null });
