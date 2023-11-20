@@ -19,10 +19,10 @@
                   round
                   width="0.8rem"
                   height="0.8rem"
-                  src="https://img01.yzcdn.cn/vant/cat.jpeg"
+                  :src="baseImageUrl + item.userLogo"
                   />
                 </div>
-                <span>许诗柔-{{item.recruiter}}</span>
+                <span>{{item.username}}-{{item.recruiter}}</span>
               </div>
               <span class="company-address">{{ item.city }}-{{ item.district }}</span>
             </div>
@@ -35,25 +35,57 @@
 
 <script>
 import { Icon, Image as VanImage } from "vant";
+import {mapState} from 'vuex'
 export default {
   name: "CompanyList",
   data() {
-    return {};
+    return {
+    };
   },
-
+  computed: {
+    ...mapState(['baseImageUrl'])
+  },
   props: {
     list: {
       type: Array,
       require: true,
     },
   },
-
+   watch: {
+    // 监听list变化
+    list: {
+      handler(newList) {
+        // 对每个item的userId发起请求获取头像信息
+        newList.forEach(item => {
+          this.fetchUserAvatar(item);
+        });
+      },
+      deep: true,
+    },
+  },
   mounted() {},
-  methods: {},
+  methods: {
+    fetchUserAvatar(item) {
+    this.$http.post('/user/userId', { userId: item.userId })
+      .then(response => {
+        const userData = response.data;
+
+        // 在item中保存头像信息
+        this.$set(item, 'userLogo', userData.userLogo);
+        this.$set(item, 'username', userData.username);
+      })
+      .catch(error => {
+        console.error('获取用户头像失败', error);
+      });
+  },
+  },
+
   components: {
     [Icon.name]: Icon,
     [VanImage.name]: VanImage
   },
+
+  
 };
 </script>
 

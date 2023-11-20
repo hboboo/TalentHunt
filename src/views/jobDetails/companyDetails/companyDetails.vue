@@ -14,7 +14,7 @@
           width="2rem"
           height="2rem"
           fit="cover"
-          src="https://img01.yzcdn.cn/vant/cat.jpeg"
+          :src="baseImageUrl + jobDetails.company.companyLogo"
         />
       </div>
     </section>
@@ -45,6 +45,7 @@
 
 <script>
 import {Image, Icon} from 'vant';
+import {mapState} from 'vuex'
 export default {
   name: 'CompanyDetails',
   props: {
@@ -52,6 +53,9 @@ export default {
       type: Object,
       default: null,
     },
+  },
+  computed: {
+    ...mapState(["baseImageUrl"])
   },
   data() {
     return {

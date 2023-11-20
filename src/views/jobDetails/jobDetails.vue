@@ -36,11 +36,11 @@
               round
               width="2rem"
               height="2rem"
-              src="http://localhost:3000/uploads/avatars/avatars_654b440c876300001f0065fd.png"
+              :src="baseImageUrl + userData.userLogo"
             />
           </div>
           <div class="hr">
-            <span class="hr-name">陶文婷</span>
+            <span class="hr-name">{{userData.username}}</span>
             <span class="hr-company">{{jobDetails.short_company_name}}·{{jobDetails.recruiter}}</span>
           </div>
           <div class="hr-link">
@@ -107,6 +107,7 @@
 
 <script>
 import {Icon, Toast, NavBar, Image} from 'vant';
+import {mapState} from 'vuex'
 export default {
   name: 'JobDetails',
  
@@ -114,9 +115,13 @@ export default {
     return {
       isCollected: false,  // 收藏
       jobDetails: null,  // 存储岗位详情的数据
+      userData: null,    //用户数据
     };
   },
 
+  computed: {
+    ...mapState(['baseImageUrl'])
+  },
   mounted() {
     
   },
@@ -138,22 +143,24 @@ export default {
     this.$http.get(`/job/${jobId}`)
       .then(response => {
         this.jobDetails = response.data;  
+        const userId = this.jobDetails.userId;
+        // 第二个请求使用userId
+        return this.$http.post('/user/userId', { userId });
+      })
+      .then(response2 => {
+        this.userData = response2.data;
       })
       .catch(error => {
         console.error('获取岗位详情失败', error);
       });
     },
+
     handleGoBack() {
       // 返回上一级路由
       this.$router.go(-1);
     },
 
-    createImageURL(binaryData) {
-      if (!binaryData) return '';
-      console.log(binaryData);
-      const blob = new Blob([binaryData], { type: 'image/png' });
-      return URL.createObjectURL(blob);
-    },
+    
   
   },
 

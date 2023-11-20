@@ -94,7 +94,7 @@
             label="任职要求"
             type="textarea"
             maxlength="50"
-            placeholder="请输入任职要求逗号分隔"
+            placeholder="请输入任职要求逗号号分隔"
             show-word-limit
           />
           <van-field
@@ -354,13 +354,27 @@ export default {
     ...mapState(["userId"]),
   },
 
-  mounted() {},
+  mounted() {
+    
+  },
 
   methods: {
     // 提交表单
     onSubmit() {
-      // 创建一个 FormData 对象，用于发送文件
       const formData = new FormData();
+
+      // 手动转换岗位标签为数组
+      const jobTagArray = this.job_tag.split('。').map(item => item.trim());
+      formData.append('job_tag', JSON.stringify(jobTagArray));
+
+      // 手动转换工作职责为数组
+      const jobResponsibilityArray = this.job_responsibility.split('。').map(item => item.trim());
+      formData.append('job_responsibility', JSON.stringify(jobResponsibilityArray));
+
+      // 手动转换任职要求为数组
+      const jobRequireArray = this.job_require.split('。').map(item => item.trim());
+      formData.append('job_require', JSON.stringify(jobRequireArray));
+
 
       // 添加表单数据
       formData.append("jobname", this.jobname);
@@ -370,18 +384,6 @@ export default {
       formData.append("short_company_name", this.short_company_name);
       formData.append("city", this.city);
       formData.append("district", this.district);
-      formData.append(
-        "job_tag",
-        this.job_tag.split("，").map((item) => item.trim())
-      ); // 处理岗位标签为数组
-      formData.append(
-        "job_responsibility",
-        this.job_responsibility.split("，").map((item) => item.trim())
-      ); // 处理工作职责为数组
-      formData.append(
-        "job_require",
-        this.job_require.split("，").map((item) => item.trim())
-      ); // 处理任职要求为数组
       formData.append("job_education", this.job_education);
       formData.append("job_experience", this.job_experience);
       formData.append("recruiter", this.recruiter);
@@ -424,6 +426,8 @@ export default {
           console.error("请求失败", error.message);
         });
     },
+
+   
 
     afterRead(file) {
       console.log(file);
@@ -495,7 +499,8 @@ export default {
     [Uploader.name]: Uploader,
     [Dialog.name]: Dialog,
   },
-};
+  
+}
 </script>
 
 <style lang="less" scoped>
