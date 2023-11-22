@@ -10,6 +10,8 @@ const companyDetails = () => import('../views/jobDetails/companyDetails/companyD
 const register = () => import('../views/register/register.vue')
 const login = () => import('../views/login/login.vue')
 const issueJob = () => import('../views/issueJob/issueJob.vue')
+const chatList = () => import('../views/chatList/chatList.vue')
+const chatListDetails = () => import('../views/chatList/chatListDetails/chatListDetails.vue')
 
 Vue.use(VueRouter)
 
@@ -66,6 +68,19 @@ const routes = [{
     {
       path: '/issueJob',
       component: issueJob
+    },
+    //聊天列表
+    {
+      path: '/chatList',
+      name: 'chatList',
+      component: chatList,
+      children: [
+        //聊天详情页
+        {
+          path: 'chatListDetails',
+          component: chatListDetails
+        }
+      ]
     }
   ]
 }]

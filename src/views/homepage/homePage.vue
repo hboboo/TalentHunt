@@ -26,10 +26,8 @@
         <van-tabbar route>
           <van-tabbar-item replace icon="home-o" to="/home">职位</van-tabbar-item>
           <van-tabbar-item replace icon="search">标签</van-tabbar-item>
-          <van-tabbar-item replace icon="friends-o">标签</van-tabbar-item>
-          <van-tabbar-item replace icon="setting-o" to="/homePage" class="van-tabbar-item--active"
-            >我的</van-tabbar-item
-          >
+          <van-tabbar-item replace icon="friends-o" to="/chatList">标签</van-tabbar-item>
+          <van-tabbar-item replace icon="setting-o" to="/homePage" class="van-tabbar-item--active">我的</van-tabbar-item>
         </van-tabbar>
       </section>
     </section>
@@ -64,8 +62,9 @@ export default {
 
       if (storedToken && !isAuthenticated) {
         const storedRole = localStorage.getItem("role");
+        const storedUserId = localStorage.getItem("userId");
         this.$store
-          .dispatch("login", { isAuthenticated: true, token: storedToken, role: storedRole })
+          .dispatch("login", { isAuthenticated: true, token: storedToken, role: storedRole, userId: storedUserId })
           .then(() => {
             // 获取用户信息
             this.getUserInfo();
