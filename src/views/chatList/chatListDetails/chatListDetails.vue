@@ -1,91 +1,32 @@
 <template>
   <div class="chat-details-container">
     <section class="chat-top">
-      <van-icon name="arrow-left" color="#1989fa" />
+      <van-icon name="arrow-left" color="#1989fa" @click="goBack"/>
       <span>发送人的姓名</span>
     </section>
     <section class="chat-container">
       <div class="send-container">
         <ul class="send-ul">
-          <li class="send-li">
+          <li class="send-li" v-for="item in otherUserMessage" :key="item._id">
             <div class="send-time">
               <h3>星期天 18:51</h3>
             </div>
             <div class="send-text">
               <van-image width="1.2rem" height="1.2rem" fit="cover" src="https://img01.yzcdn.cn/vant/cat.jpeg" />
-              <p>
-                策划师蛇口街道哈刷卡机快捷键哈山萨达跨境电商废弃物i哦日期哦为i来看下很残酷久啊还是看见啊山东科技啊阿萨抠脚大汉阿看见四大欠王i人是咋算科技活动
-              </p>
-            </div>
-          </li>
-          <li class="send-li">
-            <div class="send-time">
-              <h3>星期天 18:51</h3>
-            </div>
-            <div class="send-text">
-              <van-image width="1.2rem" height="1.2rem" fit="cover" src="https://img01.yzcdn.cn/vant/cat.jpeg" />
-              <p>
-                策划师蛇口街道哈刷卡机快捷键哈山萨达跨境电商废弃物i哦日期哦为i来看下很残酷久啊还是看见啊山东科技啊阿萨抠脚大汉阿看见四大欠王i人是咋算科技活动
-              </p>
+              <p>{{item.content}}</p>
             </div>
           </li>
         </ul>
       </div>
       <div class="my-send-container">
         <ul class="send-ul">
-          <li class="send-li">
+          <li class="send-li" v-for="item in currentUserMessage" :key="item._id">
             <div class="send-time">
               <h3>星期天 18:51</h3>
             </div>
             <div class="send-text">
               <van-image width="1.2rem" height="1.2rem" fit="cover" src="https://img01.yzcdn.cn/vant/cat.jpeg" />
-              <p>
-                策划师蛇口街道哈刷卡机快捷键哈山萨达跨境电商废弃物i哦日期哦为i来看下很残酷久啊还是看见啊山东科技啊阿萨抠脚大汉阿看见四大欠王i人是咋算科技活动
-              </p>
-            </div>
-          </li>
-          <li class="send-li">
-            <div class="send-time">
-              <h3>星期天 18:51</h3>
-            </div>
-            <div class="send-text">
-              <van-image width="1.2rem" height="1.2rem" fit="cover" src="https://img01.yzcdn.cn/vant/cat.jpeg" />
-              <p>
-                策划师蛇口街道哈刷卡机快捷键哈山萨达跨境电商废弃物i哦日期哦为i来看下很残酷久啊还是看见啊山东科技啊阿萨抠脚大汉阿看见四大欠王i人是咋算科技活动
-              </p>
-            </div>
-          </li>
-          <li class="send-li">
-            <div class="send-time">
-              <h3>星期天 18:51</h3>
-            </div>
-            <div class="send-text">
-              <van-image width="1.2rem" height="1.2rem" fit="cover" src="https://img01.yzcdn.cn/vant/cat.jpeg" />
-              <p>
-                策划师蛇口街道哈刷卡机快捷键哈山萨达跨境电商废弃物i哦日期哦为i来看下很残酷久啊还是看见啊山东科技啊阿萨抠脚大汉阿看见四大欠王i人是咋算科技活动
-              </p>
-            </div>
-          </li>
-          <li class="send-li">
-            <div class="send-time">
-              <h3>星期天 18:51</h3>
-            </div>
-            <div class="send-text">
-              <van-image width="1.2rem" height="1.2rem" fit="cover" src="https://img01.yzcdn.cn/vant/cat.jpeg" />
-              <p>
-                策划师蛇口街道哈刷卡机快捷键哈山萨达跨境电商废弃物i哦日期哦为i来看下很残酷久啊还是看见啊山东科技啊阿萨抠脚大汉阿看见四大欠王i人是咋算科技活动
-              </p>
-            </div>
-          </li>
-          <li class="send-li">
-            <div class="send-time">
-              <h3>星期天 18:51</h3>
-            </div>
-            <div class="send-text">
-              <van-image width="1.2rem" height="1.2rem" fit="cover" src="https://img01.yzcdn.cn/vant/cat.jpeg" />
-              <p>
-                策划师蛇口街道哈刷卡机快捷键哈山萨达跨境电商废弃物i哦日期哦为i来看下很残酷久啊还是看见啊山东科技啊阿萨抠脚大汉阿看见四大欠王i人是咋算科技活动
-              </p>
+              <p>{{item.content}}</p>
             </div>
           </li>
         </ul>
@@ -108,18 +49,43 @@
 
 <script>
 import { Icon, Image as VanImage, Field } from "vant";
+
 export default {
   name: "ChatListDetails",
 
   data() {
     return {
-      content: '',
-      sender: '655e13f0869c101e85f09d46',
-      receiver: '655b14c1abe5460953b36362'
+      content: '', //聊天内容
+      currentUserMessage: [],    //渲染自己发送的内容
+      otherUserMessage: [],      //渲染其他人发送的信息
+      otherUser: {
+        sender: null,
+        receiver: null
+      },
+      currentUser: {
+        sender: null,
+        receiver: null
+      }
     };
   },
 
-  mounted() {},
+  
+  created() {
+    const userId = localStorage.getItem('userId');  //浏览器读取userId
+    const otherUserId = this.$route.query.sender    //其他页面路由传递的其他用户id
+    //其他人发送的信息
+    this.otherUser.sender = otherUserId;
+    this.otherUser.receiver = userId;
+    //自己发的信息
+    this.currentUser.sender = userId;
+    this.currentUser.receiver = otherUserId
+    this.getOtherUserMessage()
+    this.getcurrentUserMessage()
+  },
+
+  mounted() {
+    
+  },
 
   methods: {
     sendMessage() {
@@ -127,19 +93,59 @@ export default {
       const postData = {
         content: this.content,
         time: currentTime,
-        sender: this.sender,
-        receiver: this.receiver,
+        sender: this.currentUser.sender,
+        receiver: this.currentUser.receiver,
         isRead: false, // 标记为未读
       }
       this.$http.post('/chat', postData)
       .then(response => {
-        console.log('Message sent successfully:', response.data);
+        this.currentUserMessage.push(postData);
+        // console.log('Message sent successfully:', response.data);
+        // 清空输入框内容
+        this.content = "";
       })
       .catch(error => {
         // 处理错误，如果有的话
         console.error('Error sending message:', error);
       });
-    }
+    },
+
+    //获取其他用户信息发过来的信息
+    getOtherUserMessage() {
+      const postData = {
+        sender: this.otherUser.sender,        //发送人的id
+        receiver: this.otherUser.receiver     //接收人的id
+      }
+      this.$http.post('/chat/otherUser', postData)
+      .then(res => {
+        this.otherUserMessage = res.data
+      })
+      .catch(error => {
+        console.log(error);
+      })
+    },
+
+    //获取自己发的信息
+    getcurrentUserMessage() {
+      const postData = {
+        sender: this.currentUser.sender,        //发送人的id
+        receiver: this.currentUser.receiver     //接收人的id
+      }
+      this.$http.post('/chat/otherUser', postData)
+      .then(res => {
+        this.currentUserMessage = res.data
+      })
+      .catch(error => {
+        console.log(error);
+      })
+    },
+
+    goBack() {
+      this.$router.go(-1)
+      setTimeout(() => {
+        window.location.reload();
+      }, 100);
+    },
   },
 
   components: {

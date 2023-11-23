@@ -1,16 +1,21 @@
 <template>
   <div class="chatList-container">
     <section class="chatList-top">
-      <van-icon name="arrow-left" color="#1989fa"  @click="goBack"/>
+      <van-icon name="arrow-left" color="#1989fa" @click="goBack" />
       <span>互动</span>
       <h2>聊天</h2>
     </section>
     <section class="chat-container">
       <ul class="chat-ul">
-        <li class="chat-li" @click="toDetails" v-for="(sender, index) in Object.keys(senderMessages)" :key="index">
+        <li
+          class="chat-li"
+          @click="toDetails(sender)"
+          v-for="(sender, index) in Object.keys(senderMessages)"
+          :key="index"
+        >
           <div class="chat-img">
             <van-image width="2rem" height="2rem" fit="cover" src="https://img01.yzcdn.cn/vant/cat.jpeg" />
-            <van-badge :content="senderMessages[sender].messageCount" />
+            <van-badge v-if="!senderMessages[sender].latestMessage.isRead" :content="senderMessages[sender].messageCount" />
           </div>
           <div class="info">
             <div class="info-top">
@@ -30,7 +35,7 @@
 
 <script>
 import { Icon, Image as VanImage, Badge } from "vant";
-import {mapState} from 'vuex'
+import { mapState } from "vuex";
 export default {
   name: "ChatList",
 
@@ -46,24 +51,32 @@ export default {
   },
 
   computed: {
-    ...mapState(['userId'])
+    ...mapState(["userId"]),
   },
 
   methods: {
-    toDetails() {
-      this.$router.push("/chatList/chatListDetails");
+    toDetails(sender) {
+      this.markAsRead(sender);
+      this.$router.push({
+        path: "/chatList/chatListDetails",
+        query: { sender }, // 将发送者ID作为查询参数传递
+      });
     },
 
     fetchMessages() {
+      const storedReceiverId = localStorage.getItem("userId");
+      const receiverId = storedReceiverId || this.userId;
+
       this.$http
         .get("/chat", {
           params: {
-            receiver: this.userId,
+            receiver: receiverId,
           },
         })
         .then((response) => {
           // 请求成功处理返回的消息数据
-          this.messages = response.data;
+          const newMessages = response.data;
+          this.messages = [...this.messages, ...newMessages]; // 追加新消息到现有消息数组
           this.processMessages();
         })
         .catch((error) => {
@@ -91,8 +104,20 @@ export default {
     },
 
     goBack() {
-      this.$router.push('/homePage');
-    }
+      this.$router.push("/homePage");
+    },
+
+    markAsRead(sender) {
+      // 发送请求将消息标记为已读
+      this.$http
+        .post("/chat/markAsRead", { sender })
+        .then((response) => {
+          console.log("Message marked as read successfully:", response.data);
+        })
+        .catch((error) => {
+          console.error("Error marking message as read:", error);
+        });
+    },
   },
   filters: {
     formatTime(timeString) {
