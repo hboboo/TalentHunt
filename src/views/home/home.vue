@@ -33,13 +33,13 @@
       </section>
       <company-list :list='jobList'></company-list>
       <section class="tabbar-container">
-        <van-tabbar  route>
+        <van-tabbar route>
           <van-tabbar-item replace icon="home-o" to="/home">职位</van-tabbar-item>
-          <van-tabbar-item replace icon="search" to="/search">标签</van-tabbar-item>
-          <van-tabbar-item replace icon="friends-o">标签</van-tabbar-item>
-          <van-tabbar-item replace icon="setting-o"  to="/homePage">我的</van-tabbar-item>
+          <van-tabbar-item replace icon="search" to="search">搜索</van-tabbar-item>
+          <van-tabbar-item replace icon="friends-o" to="/chatList">沟通</van-tabbar-item>
+          <van-tabbar-item replace icon="setting-o" to="/homePage">我的</van-tabbar-item>
         </van-tabbar>
-      </section>
+    </section>
     </section>
   </div>
 </template>

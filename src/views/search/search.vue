@@ -37,13 +37,13 @@
         <company-list></company-list>
       </section>
       <section class="tabbar-container">
-       <van-tabbar  route>
-          <van-tabbar-item replace icon="home-o"  to="/home">职位</van-tabbar-item>
-          <van-tabbar-item replace icon="search" to="/search">标签</van-tabbar-item>
-          <van-tabbar-item replace icon="friends-o">标签</van-tabbar-item>
+        <van-tabbar route>
+          <van-tabbar-item replace icon="home-o" to="/home">职位</van-tabbar-item>
+          <van-tabbar-item replace icon="search" to="search" class="van-tabbar-item--active">搜索</van-tabbar-item>
+          <van-tabbar-item replace icon="friends-o" to="/chatList">消息</van-tabbar-item>
           <van-tabbar-item replace icon="setting-o" to="/homePage">我的</van-tabbar-item>
         </van-tabbar>
-      </section>
+    </section>
     </section>
   </div>
 </template>

@@ -25,8 +25,8 @@
       <section class="tabbar-container">
         <van-tabbar route>
           <van-tabbar-item replace icon="home-o" to="/home">职位</van-tabbar-item>
-          <van-tabbar-item replace icon="search">标签</van-tabbar-item>
-          <van-tabbar-item replace icon="friends-o" to="/chatList">标签</van-tabbar-item>
+          <van-tabbar-item replace icon="search">搜索</van-tabbar-item>
+          <van-tabbar-item replace icon="friends-o" to="/chatList">沟通</van-tabbar-item>
           <van-tabbar-item replace icon="setting-o" to="/homePage" class="van-tabbar-item--active">我的</van-tabbar-item>
         </van-tabbar>
       </section>

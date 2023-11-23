@@ -31,7 +31,7 @@
           </div>
         </div>
         <div class="header-hr-info">
-          <div class="hr-img">
+          <div class="hr-img" v-if="userData && userData.userLogo">
             <van-image
               round
               width="2rem"
@@ -39,7 +39,7 @@
               :src="baseImageUrl + userData.userLogo"
             />
           </div>
-          <div class="hr">
+          <div class="hr" v-if="userData && userData.username">
             <span class="hr-name">{{userData.username}}</span>
             <span class="hr-company">{{jobDetails.short_company_name}}·{{jobDetails.recruiter}}</span>
           </div>
@@ -94,7 +94,7 @@
       <section class="bottom-container">
         <div class="button-container">
           <div class="text-div">
-            <span class="text">立即沟通</span>
+            <span class="text" @click="communicate">立即沟通</span>
           </div>
         </div>
       </section>
@@ -108,6 +108,7 @@
 <script>
 import {Icon, Toast, NavBar, Image} from 'vant';
 import {mapState} from 'vuex'
+import loginVue from '../login/login.vue';
 export default {
   name: 'JobDetails',
  
@@ -116,6 +117,7 @@ export default {
       isCollected: false,  // 收藏
       jobDetails: null,  // 存储岗位详情的数据
       userData: null,    //用户数据
+      sendUserId: null   //hr的Id
     };
   },
 
@@ -144,6 +146,7 @@ export default {
       .then(response => {
         this.jobDetails = response.data;  
         const userId = this.jobDetails.userId;
+        this.sendUserId = userId //存一下当前Id
         // 第二个请求使用userId
         return this.$http.post('/user/userId', { userId });
       })
@@ -160,7 +163,13 @@ export default {
       this.$router.go(-1);
     },
 
-    
+    //沟通
+    communicate() {
+      this.$router.push({
+        path: "/chatList/chatListDetails",
+        query: {sender: this.sendUserId}
+      })
+    }
   
   },
 
