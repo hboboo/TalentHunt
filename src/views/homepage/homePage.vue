@@ -92,6 +92,7 @@ export default {
         message: "确定要退出账号吗？",
       })
         .then(() => {
+          localStorage.removeItem("searchHistory");
           this.$store.dispatch("logout");
           this.$router.push("/login");
         })
@@ -119,6 +120,7 @@ export default {
         title: "身份验证过期",
         message: "请重新登录",
       }).then(() => {
+        localStorage.removeItem("searchHistory");
         this.$store.dispatch("logout");
         this.$router.push("/login");
       });

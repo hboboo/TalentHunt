@@ -2,39 +2,25 @@
   <div>
     <section class="search-container">
       <section class="header-nav">
-        <van-icon name="arrow-left" />
-        <van-search v-model="value" placeholder="请输入搜索关键词" style="width: 12rem"/>
-        <button class="search-button" @click="test">搜索</button>
+        <van-icon name="arrow-left" @click="refresh" />
+        <van-search v-model="searchValue" placeholder="请输入搜索关键词" style="width: 12rem" />
+        <button class="search-button" @click="getSearch">搜索</button>
       </section>
-      <section class="hot-searches-container">
-        <h1 class="hot-searches-head">热门搜索</h1>
-        <ul class="hot-tag-ul">
-          <li>
-            后端开发
-          </li>
-          <li>
-            我试一下字数长度
-          </li>
-        </ul>
-      </section>
-      <section class="search-history">
+      <section class="search-history" v-if="searchhistoryarray.length > 0">
         <h1 class="search-history-head">搜索历史</h1>
-        <div v-if="searchHistory">
+        <div>
           <ul class="search-history-ul">
-            <li>我试试<van-icon name="cross" style="margin-left: 10.5rem"/></li>
-            <li>我试试<van-icon name="cross" style="margin-left: 10.5rem"/></li>
-            <li>我试试<van-icon name="cross" style="margin-left: 10.5rem"/></li>
+            <li v-for="(item, index) in searchhistoryarray" :key="index" @click="searchWithoutStorage(item)">
+              {{ item }}
+            </li>
           </ul>
         </div>
-        <div v-else>
-          <h5 class="none-search-history">暂无搜索历史</h5>
-        </div>
       </section>
-      <section v-if="searchResults">
-        <company-list></company-list>
-        <company-list></company-list>
-        <company-list></company-list>
-        <company-list></company-list>
+      <section class="empty-container">
+        <van-empty description="暂无搜索历史" v-if="search" />
+      </section>
+      <section class="collect-list-container">
+        <company-list :list="jobList"></company-list>
       </section>
       <section class="tabbar-container">
         <van-tabbar route>
@@ -43,36 +29,65 @@
           <van-tabbar-item replace icon="friends-o" to="/chatList">消息</van-tabbar-item>
           <van-tabbar-item replace icon="setting-o" to="/homePage">我的</van-tabbar-item>
         </van-tabbar>
-    </section>
+      </section>
     </section>
   </div>
 </template>
 
 <script>
-import {Icon, Search, Tabbar,TabbarItem} from 'vant';
-import companyList from '../../components/common/companyList.vue'
+import { Icon, Search, Tabbar, TabbarItem, Empty } from "vant";
+import companyList from "../../components/common/companyList.vue";
 export default {
-  name: 'Search',
+  name: "Search",
 
   data() {
     return {
-      value: '', //搜索内容的值
-      searchResults : true,  //搜索结果
-      searchHistory: true,  //搜索历史
+      searchValue: "", //搜索内容的值
+      search: false,
+      jobList: [],
+      searchhistoryarray: [], //搜索历史数组
     };
   },
 
   mounted() {
-    
+    this.searchhistoryarray = JSON.parse(localStorage.getItem("searchHistory")) || [];
   },
 
   methods: {
-    test(){
-      //请求后打印导控制台
-      this.$http.get('/job/find')
-      .then((res) => {
-        console.log(res.data);
-      })
+    getSearch() {
+      // 检查搜索关键词是否为空
+      if (!this.searchValue.trim()) {
+        // 如果为空，不执行搜索
+        return;
+      }
+      const searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
+      searchHistory.unshift(this.searchValue.trim());
+      localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
+      this.$http
+        .post("job/search", { keyword: this.searchValue })
+        .then((response) => {
+          // 处理后端返回的搜索结果
+          this.jobList = response.data;
+        })
+        .catch((error) => {
+          console.error("搜索失败", error);
+        });
+    },
+    searchWithoutStorage(keyword) {
+      // 执行搜索，但不添加到浏览器存储
+      this.$http
+        .post("job/search", { keyword })
+        .then((response) => {
+          // 处理后端返回的搜索结果
+          this.jobList = response.data;
+        })
+        .catch((error) => {
+          console.error("搜索失败", error);
+        });
+    },
+
+    refresh() {
+     window.location.reload();
     }
   },
 
@@ -82,63 +97,54 @@ export default {
     [Tabbar.name]: Tabbar,
     [TabbarItem.name]: TabbarItem,
     companyList,
-  }
+    [Empty.name]: Empty,
+  },
 };
 </script>
 
 <style lang="less" scoped>
-  @import '../../style/mixin.less';
+@import "../../style/mixin.less";
 
-  .header-nav{
-    display: flex;
-    align-items: center;
+.header-nav {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  .search-input {
+    margin-left: 1.5rem;
+  }
+  .search-button {
     background-color: #fff;
-    .search-input{
-      margin-left: 1.5rem;
-    }
-    .search-button{
-      background-color: #fff;
-      margin-left: 0.7rem;
-      .sc(0.8rem,#1c7396)
-    }
+    margin-left: 0.7rem;
+    .sc(0.8rem,#1c7396);
   }
-  .hot-searches-head{
-    margin: 0.4rem 0.4rem;
-    .sc(0.9rem, #999);
-  }
-  .hot-tag-ul{
-    display: flex;
-    flex-wrap: wrap;
-    background-color: #fff;
-    padding: .5rem;
-    li{
-      .sc(.6rem, #6d7885);
-      padding: .3rem .3rem;
-      background-color: #ebf5ff;
-      border-radius: 0.2rem;
-      border: 1px;
-      margin: 0 .4rem .2rem 0;
-    }
-  }
-  .search-history-head{
-    margin: 0.4rem 0.4rem;
-    .sc(0.9rem, #999);
-  }
-  .search-history-ul{
-    display: flex;
-    flex-direction: column;
-    li{
-      background-color: #fff;
-      .sc(0.8rem, #666);
-      text-indent: 0.4rem;
-      border: 1px solid #d4d2d2;
-      border-radius: 0.32rem;
-      margin: 0.1rem 0.5rem;
-    }
-  }
-  .none-search-history{
-    background-color: #fff;
-    .wh(100%, 5.8rem);
+}
+.hot-searches-head {
+  margin: 0.4rem 0.4rem;
+  .sc(0.9rem, #999);
+}
+.search-history-head {
+  margin: 0.4rem 0.4rem;
+  .sc(0.9rem, #999);
+}
+.search-history-ul {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 0.3rem;
+  li {
+    background-color: #eef2f4;
+    padding: 0.2rem;
+    margin: 0.2rem;
+    border-radius: 0.2rem;
     text-align: center;
+    .sc(0.65rem, #7f7d7d);
   }
+}
+.empty-container {
+  /deep/.van-empty__image {
+    .wh(100%, 30%);
+  }
+  /deep/.van-empty__description {
+    font-size: 1rem;
+  }
+}
 </style>
