@@ -16,7 +16,7 @@
             v-if="userInfoData.role === 'recruiter'"
             @click="toIssueJob"
           />
-          <van-cell title="我的收藏" is-link size="large" />
+          <van-cell title="我的收藏" is-link size="large" @click="toCollect"/>
           <van-cell title="我的信息" is-link size="large" />
           <van-cell title="关于软件" is-link size="large" />
           <van-cell title="退出账号" is-link size="large" @click="exit" />
@@ -126,6 +126,9 @@ export default {
 
     toIssueJob() {
       this.$router.push('/issueJob')
+    },
+    toCollect() {
+      this.$router.push('/collect')
     }
   },
   components: {

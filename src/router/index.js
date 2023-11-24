@@ -12,6 +12,7 @@ const login = () => import('../views/login/login.vue')
 const issueJob = () => import('../views/issueJob/issueJob.vue')
 const chatList = () => import('../views/chatList/chatList.vue')
 const chatListDetails = () => import('../views/chatList/chatListDetails/chatListDetails.vue')
+const collect = () => import('../views/collect/collect.vue')
 
 Vue.use(VueRouter)
 
@@ -81,6 +82,11 @@ const routes = [{
           component: chatListDetails
         }
       ]
+    },
+    //收藏页面
+    {
+      path: '/collect',
+      component: collect
     }
   ]
 }]

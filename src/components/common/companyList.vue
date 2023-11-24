@@ -63,7 +63,13 @@ export default {
       deep: true,
     },
   },
-  mounted() {},
+  mounted() {
+    if (this.$route.path === '/collect') {
+      this.list.forEach(item => {
+        this.fetchUserAvatar(item);
+      });
+    }
+  },
   methods: {
     fetchUserAvatar(item) {
     this.$http.post('/user/userId', { userId: item.userId })
