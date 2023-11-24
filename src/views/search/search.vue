@@ -16,10 +16,10 @@
           </ul>
         </div>
       </section>
-      <section class="empty-container">
-        <van-empty description="暂无搜索历史" v-if="search" />
+      <section class="empty-container" v-if="searchhistoryarray.length === 0 && jobList.length === 0">
+        <van-empty description="暂无搜索历史"  />
       </section>
-      <section class="collect-list-container">
+      <section class="collect-list-container" >
         <company-list :list="jobList"></company-list>
       </section>
       <section class="tabbar-container">
@@ -43,7 +43,6 @@ export default {
   data() {
     return {
       searchValue: "", //搜索内容的值
-      search: false,
       jobList: [],
       searchhistoryarray: [], //搜索历史数组
     };
