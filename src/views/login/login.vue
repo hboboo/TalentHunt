@@ -61,7 +61,12 @@ export default {
         .then((res) => {
           if (res.data.message === "登录成功") {
             // 登录成功后调用Vuex的action更新状态
-            this.$store.dispatch("login", { isAuthenticated: true, token: res.data.token, role: res.data.role, userId: res.data.userId });
+            this.$store.dispatch("login", {
+              isAuthenticated: true,
+              token: res.data.token,
+              role: res.data.role,
+              userId: res.data.userId,
+            });
             // 跳转到首页或其他需要跳转的页面
             this.$router.push("/home");
           } else {
@@ -73,8 +78,10 @@ export default {
           if (error.response && error.response.status === 401 && error.response.data.message === "用户未注册") {
             Dialog.alert({
               message: "该用户未注册",
-            }).then(() => {
-              // on close
+            });
+          } else if (error.response.data.message === "密码错误") {
+            Dialog.alert({
+              message: "密码错误，请重新输入",
             });
           }
         });

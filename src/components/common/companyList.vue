@@ -69,6 +69,11 @@ export default {
         this.fetchUserAvatar(item);
       });
     }
+    if (this.$route.path === '/myIssue') {
+      this.list.forEach(item => {
+        this.fetchUserAvatar(item);
+      });
+    }
   },
   methods: {
     fetchUserAvatar(item) {

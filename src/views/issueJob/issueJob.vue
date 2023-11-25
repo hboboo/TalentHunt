@@ -2,7 +2,7 @@
   <div class="issuejob-container">
     <section class="top-container">
       <div class="arrow">
-        <van-icon name="arrow-left" color="#989b9d" />
+        <van-icon name="arrow-left" color="#1989fa" @click="goBack"/>
       </div>
       <h1 class="title">发布岗位</h1>
     </section>
@@ -272,7 +272,7 @@
           />
           <van-field name="companyLogo" label="公司头像">
             <template #input>
-              <van-uploader v-model="companyLogo" multiple :max-count="1" :after-read="afterRead" ref="file" />
+              <van-uploader v-model="companyLogo" multiple :max-count="1"  ref="file" />
             </template>
           </van-field>
           <div style="margin: 16px">
@@ -428,10 +428,10 @@ export default {
     },
 
    
-
-    afterRead(file) {
-      console.log(file);
+    goBack() {
+      this.$router.push("/homePage");
     },
+   
 
     //薪资选择器
     onConfirmSalary(value) {

@@ -13,6 +13,9 @@ const issueJob = () => import('../views/issueJob/issueJob.vue')
 const chatList = () => import('../views/chatList/chatList.vue')
 const chatListDetails = () => import('../views/chatList/chatListDetails/chatListDetails.vue')
 const collect = () => import('../views/collect/collect.vue')
+const myIssue = () => import('../views/myIssue/myIssue.vue')
+const personalInfo = () => import('../views/personalInfo/personalInfo.vue')
+const compileInfo = () => import('../views/personalInfo/compileInfo/compileInfo.vue')
 
 Vue.use(VueRouter)
 
@@ -87,6 +90,22 @@ const routes = [{
     {
       path: '/collect',
       component: collect
+    },
+    //我的发布页面
+    {
+      path: '/myIssue',
+      component: myIssue
+    },
+    //个人资料页面
+    {
+      path: '/personalInfo',
+      component: personalInfo,
+      children: [
+        {
+          path: 'compileInfo',
+          component: compileInfo
+        }
+      ]
     }
   ]
 }]

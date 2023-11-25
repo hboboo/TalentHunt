@@ -10,14 +10,21 @@
       <section class="link-container">
         <div>
           <van-cell
-            title="我的发布"
+            title="发布岗位"
             is-link
             size="large"
             v-if="userInfoData.role === 'recruiter'"
             @click="toIssueJob"
           />
+          <van-cell
+            title="我的发布"
+            is-link
+            size="large"
+            v-if="userInfoData.role === 'recruiter'"
+            @click="toMyIssue"
+          />
           <van-cell title="我的收藏" is-link size="large" @click="toCollect" />
-          <van-cell title="我的信息" is-link size="large" />
+          <van-cell title="我的信息" is-link size="large" @click="toPersonalInfo"/>
           <van-cell title="关于软件" is-link size="large"  @click="show = true"/>
           <van-cell title="退出账号" is-link size="large" @click="exit" />
           <van-overlay :show="show" @click="show = false">
@@ -140,6 +147,12 @@ export default {
     toCollect() {
       this.$router.push("/collect");
     },
+    toMyIssue() {
+      this.$router.push("/myIssue");
+    },
+    toPersonalInfo() {
+      this.$router.push("/personalInfo");
+    }
   },
   components: {
     [VanImage.name]: VanImage,
