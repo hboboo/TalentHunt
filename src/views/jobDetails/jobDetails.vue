@@ -30,7 +30,7 @@
             <span>{{ jobDetails.job_education }}</span>
           </div>
         </div>
-        <div class="header-hr-info">
+        <div class="header-hr-info" @click="communicate">
           <div class="hr-img" v-if="userData && userData.userLogo">
             <van-image round width="2rem" height="2rem" :src="baseImageUrl + userData.userLogo" />
           </div>
