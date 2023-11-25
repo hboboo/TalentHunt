@@ -1,7 +1,8 @@
 <template>
   <div>
     <section class="home-container">
-      <section class="navbar-container">
+      <van-sticky>
+        <section class="navbar-container">
         <div class="header-nav">
           <div>
             <span :class="{ active_job_type: changeShow == 'career' }" @click="handleClick('career', true)">全职</span>
@@ -23,6 +24,7 @@
           </div>
         </div>
       </section>
+      </van-sticky>
       <section class="swipe-container">
         <van-swipe :autoplay="3000">
           <van-swipe-item v-for="(item, index) in images" :key="index">
@@ -103,7 +105,7 @@
 </template>
 
 <script>
-import { Icon, Tabbar, TabbarItem, Swipe, SwipeItem, Field, Popup, Picker} from "vant";
+import { Icon, Tabbar, TabbarItem, Swipe, SwipeItem, Field, Popup, Picker,Sticky } from "vant";
 import companyList from "../../components/common/companyList.vue";
 export default {
   name: "Home",
@@ -250,6 +252,7 @@ export default {
     [Field.name]: Field,
     [Popup.name]: Popup,
     [Picker.name]: Picker,
+    [Sticky.name]: Sticky,
   },
 };
 </script>
@@ -369,4 +372,8 @@ export default {
 .slide-leave-to {
   transform: translateX(-100%);
 }
+/deep/.van-sticky--fixed {
+  background-color: #fff;
+}
+
 </style>

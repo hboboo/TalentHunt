@@ -99,6 +99,7 @@ export default {
 @import "../../style/mixin.less";
 .list-container {
   margin: 0.1rem 0.3rem;
+  padding-bottom: 2rem;
   .list-container-li {
     margin-bottom: 0.3rem;
     border-radius: 0.48rem;

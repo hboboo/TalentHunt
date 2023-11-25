@@ -101,7 +101,7 @@
 </template>
 
 <script>
-import { Icon, Toast, NavBar, Image } from "vant";
+import { Icon, Toast, NavBar, Image, Dialog } from "vant";
 import { mapState } from "vuex";
 export default {
   name: "JobDetails",
@@ -199,10 +199,20 @@ export default {
 
     //沟通
     communicate() {
-      this.$router.push({
-        path: "/chatList/chatListDetails",
-        query: { sender: this.sendUserId },
-      });
+      const currentUserId = localStorage.getItem("userId");
+
+      if (this.sendUserId === currentUserId) {
+        // 如果是和自己沟通，弹出警告对话框
+        Dialog.alert({
+          message: "不能和自己沟通哦！",
+        });
+      } else {
+        // 如果不是和自己沟通，进行页面跳转
+        this.$router.push({
+          path: "/chatList/chatListDetails",
+          query: { sender: this.sendUserId },
+        });
+      }
     },
 
     //获取用户收藏情况
@@ -225,6 +235,7 @@ export default {
     [Toast.name]: Toast,
     [NavBar.name]: NavBar,
     [Image.name]: Image,
+    [Dialog.name]: Dialog,
   },
 };
 </script>

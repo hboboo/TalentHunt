@@ -16,10 +16,17 @@
             v-if="userInfoData.role === 'recruiter'"
             @click="toIssueJob"
           />
-          <van-cell title="我的收藏" is-link size="large" @click="toCollect"/>
+          <van-cell title="我的收藏" is-link size="large" @click="toCollect" />
           <van-cell title="我的信息" is-link size="large" />
-          <van-cell title="关于软件" is-link size="large" />
+          <van-cell title="关于软件" is-link size="large"  @click="show = true"/>
           <van-cell title="退出账号" is-link size="large" @click="exit" />
+          <van-overlay :show="show" @click="show = false">
+            <div class="wrapper" @click.stop>
+              <div class="block">
+                <span>此为毕设学习程序，建议您使用正规招聘平台进行简历投递</span>
+              </div>
+            </div>
+          </van-overlay>
         </div>
       </section>
       <section class="tabbar-container">
@@ -35,7 +42,7 @@
 </template>
 
 <script>
-import { Image as VanImage, Cell, Tabbar, TabbarItem, Dialog } from "vant";
+import { Image as VanImage, Cell, Tabbar, TabbarItem, Dialog, Overlay } from "vant";
 import { mapState } from "vuex";
 export default {
   name: "HomePage",
@@ -43,6 +50,7 @@ export default {
   data() {
     return {
       userInfoData: null,
+      show: false
     };
   },
 
@@ -127,17 +135,18 @@ export default {
     },
 
     toIssueJob() {
-      this.$router.push('/issueJob')
+      this.$router.push("/issueJob");
     },
     toCollect() {
-      this.$router.push('/collect')
-    }
+      this.$router.push("/collect");
+    },
   },
   components: {
     [VanImage.name]: VanImage,
     [Cell.name]: Cell,
     [Tabbar.name]: Tabbar,
     [TabbarItem.name]: TabbarItem,
+    [Overlay.name]: Overlay,
   },
 };
 </script>
@@ -157,6 +166,19 @@ export default {
     top: 65%;
     left: 44.5%;
     .sc(0.7rem, #666);
+  }
+}
+.wrapper {
+  position: relative;
+  .block {
+    position: absolute;
+    top: 8rem;
+    left: 14.9%;
+    background-color: #fff;
+    .wh(11.5rem, 3.8rem);
+    .sc(0.8rem,#000);
+    padding: 0.5rem;
+    border-radius: 0.3rem;
   }
 }
 </style>
