@@ -74,7 +74,7 @@
             label="标签"
             type="textarea"
             maxlength="30"
-            placeholder="请输入岗位标签逗号分隔"
+            placeholder="请输入岗位标签句号分隔"
             show-word-limit
           />
           <van-field
@@ -84,7 +84,7 @@
             label="职责"
             type="textarea"
             maxlength="50"
-            placeholder="请输入岗位职责逗号分隔"
+            placeholder="请输入岗位职责句号分隔"
             show-word-limit
           />
           <van-field
@@ -94,7 +94,7 @@
             label="任职要求"
             type="textarea"
             maxlength="50"
-            placeholder="请输入任职要求逗号号分隔"
+            placeholder="请输入任职要求句号分隔"
             show-word-limit
           />
           <van-field
