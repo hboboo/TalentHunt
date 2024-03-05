@@ -2,7 +2,9 @@
   <div class="chat-details-container">
     <section class="chat-top">
       <van-icon name="arrow-left" color="#1989fa" @click="goBack" />
-      <span v-if="otherUser.senderInfo">{{ otherUser.senderInfo.username }}</span>
+      <span v-if="otherUser.senderInfo" class="info-name">{{ otherUser.senderInfo.username }}</span>
+      <van-icon name="newspaper-o" @click="show = true" class="curriculum-vitae" />
+      <van-action-sheet v-model="show" :actions="actions" @select="onSelect" />
     </section>
     <section class="chat-container">
       <div class="send-container">
@@ -43,7 +45,7 @@
 </template>
 
 <script>
-import { Icon, Image as VanImage, Field } from "vant";
+import { Icon, Image as VanImage, Field, ActionSheet, Dialog, Toast } from "vant";
 import { mapState } from "vuex";
 export default {
   name: "ChatListDetails",
@@ -63,6 +65,11 @@ export default {
         receiver: null,
         senderInfo: null, // 保存发送者的用户信息
       },
+      show: false,
+      actions: [
+        { name: "发送简历", index: 1 },
+        { name: "对方简历", index: 2 },
+      ],
     };
   },
 
@@ -106,6 +113,7 @@ export default {
   created() {
     const userId = localStorage.getItem("userId"); //浏览器读取userId
     const otherUserId = this.$route.query.sender; //其他页面路由传递的其他用户id
+
     //其他人发送的信息
     this.otherUser.sender = otherUserId;
     this.otherUser.receiver = userId;
@@ -189,6 +197,7 @@ export default {
       }, 100);
     },
 
+    //获取用户信息
     getUserInfo(userId, targetMessages) {
       this.$http
         .post("/user/userId", { userId })
@@ -201,9 +210,46 @@ export default {
         });
     },
 
+    //获取时间
     formatDate(dateTime) {
       const options = { year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "numeric" };
       return new Date(dateTime).toLocaleString("zh-CN", options);
+    },
+
+    //简历弹框
+    onSelect(item) {
+      this.show = false;
+
+      switch (item.index) {
+        case 1:
+          // 发送简历：向服务器发送请求，存储进数据库
+          const userId = this.currentUser.receiver;
+          const resumeId = this.currentUser.sender;
+          this.$http
+            .post("/chat/storeResume", { userId, resumeId })
+            .then((response) => {
+              // 在这里可以处理响应，例如显示成功消息
+              Toast.success('投递成功');
+              
+            })
+            .catch((error) => {
+              // 在这里可以处理错误，例如显示错误消息
+              console.error("发送简历时出错:", error);
+              Toast.fail('勿重复投递');
+            });
+
+          break;
+        case 2:
+          // 对方简历：跳转页面
+          console.log(item.index);
+          break;
+        default:
+          break;
+      }
+      // Dialog.alert({
+      //   title: "标题",
+      //   message: "弹窗内容",
+      // })
     },
   },
 
@@ -211,6 +257,8 @@ export default {
     [Icon.name]: Icon,
     [VanImage.name]: VanImage,
     [Field.name]: Field,
+    [ActionSheet.name]: ActionSheet,
+    [Toast.name]: Toast,
   },
 };
 </script>
@@ -229,13 +277,17 @@ export default {
 }
 .chat-top {
   position: relative;
-  span {
+  .info-name {
     position: absolute;
     right: 7.8rem;
     .sc(0.8rem, #666);
     font-weight: 700;
   }
+  .curriculum-vitae {
+    left: 80%;
+  }
 }
+
 .chat-container {
   overflow-y: auto;
   background-color: #f1f1f1;
@@ -254,8 +306,8 @@ export default {
   background-color: #d7d7d7;
   padding: 0.1rem;
   width: 4.3rem;
-  text-align: center; 
-  margin-left: 5.1rem; 
+  text-align: center;
+  margin-left: 5.1rem;
 }
 
 .send-text {
@@ -272,19 +324,17 @@ export default {
   }
 }
 
-/* 左侧消息样式 */
 .send-text.left {
   flex-direction: row;
 }
 
-/* 右侧消息样式 */
 .send-text.right {
   flex-direction: row-reverse;
-  text-align: right; /* 右侧消息文字右对齐 */
+  text-align: right;
 }
 
 .send-text p {
-  margin: 0; /* 重置段落的外边距，避免默认外边距影响对齐 */
+  margin: 0;
 }
 .input-content-contaienr {
   z-index: 18;
