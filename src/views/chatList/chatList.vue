@@ -7,35 +7,35 @@
     </section>
     <section class="chat-container">
       <ul class="chat-ul">
-        <li
-          class="chat-li"
-          @click="toDetails(sender)"
-          v-for="(sender, index) in Object.keys(senderMessages)"
-          :key="index"
-        >
-          <div class="chat-img">
-            <van-image
-              v-if="senderMessages[sender].userInfo && senderMessages[sender].userInfo.userLogo"
-              width="2rem"
-              height="2rem"
-              fit="cover"
-              :src="`${baseImageUrl}${senderMessages[sender].userInfo.userLogo}`"
-            />
-            <van-badge
-              v-if="!senderMessages[sender].latestMessage.isRead"
-              :content="senderMessages[sender].messageCount"
-            />
-          </div>
-          <div class="info">
-            <div class="info-top">
-              <h4 class="name" v-if="senderMessages[sender].userInfo && senderMessages[sender].userInfo.username">
-                {{ senderMessages[sender].userInfo.username }}
-              </h4>
-              <span class="time">{{ senderMessages[sender].latestMessage.time | formatTime }}</span>
+        <van-swipe-cell v-for="(sender, index) in Object.keys(senderMessages)" :key="index">
+          <template #right>
+            <van-button square type="danger" text="删除" @click="deleteMessage(sender)" />
+          </template>
+          <li class="chat-li" @click="toDetails(sender)" :key="index">
+            <div class="chat-img">
+              <van-image
+                v-if="senderMessages[sender].userInfo && senderMessages[sender].userInfo.userLogo"
+                width="2rem"
+                height="2rem"
+                fit="cover"
+                :src="`${baseImageUrl}${senderMessages[sender].userInfo.userLogo}`"
+              />
+              <van-badge
+                v-if="!senderMessages[sender].latestMessage.isRead"
+                :content="senderMessages[sender].messageCount"
+              />
             </div>
-            <span class="text">{{ senderMessages[sender].latestMessage.content }}</span>
-          </div>
-        </li>
+            <div class="info">
+              <div class="info-top">
+                <h4 class="name" v-if="senderMessages[sender].userInfo && senderMessages[sender].userInfo.username">
+                  {{ senderMessages[sender].userInfo.username }}
+                </h4>
+                <span class="time">{{ senderMessages[sender].latestMessage.time | formatTime }}</span>
+              </div>
+              <span class="text">{{ senderMessages[sender].latestMessage.content }}</span>
+            </div>
+          </li>
+        </van-swipe-cell>
       </ul>
     </section>
     <section class="tabbar-container">
@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import { Icon, Image as VanImage, Badge, Tabbar, TabbarItem } from "vant";
+import { Icon, Image as VanImage, Badge, Tabbar, TabbarItem, SwipeCell, Button, Dialog } from "vant";
 import { mapState } from "vuex";
 export default {
   name: "ChatList",
@@ -62,7 +62,12 @@ export default {
     return {
       messages: [], // 存储返回的消息数据的数组
       senderMessages: {}, // 存储每个发送者的最新消息和消息数量
+      userIds: null, //储存一下自己的id
     };
+  },
+
+  created() {
+    this.userIds = localStorage.getItem("userId");  
   },
 
   mounted() {
@@ -156,6 +161,28 @@ export default {
           console.error(`获取用户 ${senderId} 的信息时出错：`, error);
         });
     },
+
+    //删除信息
+    deleteMessage(sender) {
+      // 在这里实现删除消息的逻辑
+      Dialog.confirm({
+        message: "将删除该聊天内容！",
+      })
+        .then(() => {
+          this.$http
+            .post("/chat/deleteChat", { userId: this.userIds, senderUserId: sender })
+            .then((response) => {
+              window.location.reload();
+            })
+            .catch((error) => {
+              
+            });
+
+        })
+        .catch(() => {
+          // on cancel
+        });
+    },
   },
   filters: {
     formatTime(timeString) {
@@ -171,6 +198,9 @@ export default {
     [Badge.name]: Badge,
     [Tabbar.name]: Tabbar,
     [TabbarItem.name]: TabbarItem,
+    [SwipeCell.name]: SwipeCell,
+    [Button.name]: Button,
+    [Dialog.name]: Dialog,
   },
 };
 </script>

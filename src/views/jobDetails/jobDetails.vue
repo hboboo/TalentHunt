@@ -7,6 +7,7 @@
             <div>
               <van-icon name="star-o" v-show="!isCollected" @click="collection" />
               <van-icon name="star" v-show="isCollected" @click="uncollection" color="#efad0b" />
+              <van-icon name="delete-o" color="#ef590b" @click="deleteJob"/>
             </div>
           </template>
         </van-nav-bar>
@@ -114,6 +115,7 @@ export default {
       sendUserId: null, //hr的Id
       collectId: null, //当前工作id
       currentUser: null, //当前用户数据
+      userIds: null, //临时删除岗位用的id
     };
   },
 
@@ -122,7 +124,8 @@ export default {
   },
   mounted() {},
   created() {
-    this.fetchJobDetauls();
+    this.userIds = localStorage.getItem("userId");
+    this.fetchJobDetails();
     this.getCollect();
   },
   methods: {
@@ -130,6 +133,7 @@ export default {
     collection() {
       const userId = localStorage.getItem("userId");
       const jobId = this.collectId; // 假设你有一个变量 jobId 存储工作的 id
+      console.log(jobId);
       this.$http
         .post("user/addJobToCollection", { userId, jobId })
         .then((response) => {
@@ -151,7 +155,7 @@ export default {
     //取消收藏
     uncollection() {
       const userId = localStorage.getItem("userId");
-      const jobId = this.jobId;
+      const jobId = this.collectId;
       this.$http
         .post("user/removeJobFromCollection", { userId, jobId })
         .then((response) => {
@@ -171,7 +175,7 @@ export default {
         });
     },
 
-    fetchJobDetauls() {
+    fetchJobDetails() {
       // 在组件加载完成后，获取路由参数中的id
       const jobId = this.$route.params.id;
       this.collectId = jobId;
@@ -228,6 +232,27 @@ export default {
           console.error("获取用户详情失败", error);
         });
     },
+    //删除岗位
+    deleteJob() {
+      Dialog.confirm({
+        message: "将删除该岗位！",
+      })
+        .then(() => {
+          this.$http
+            .post("/job/deleteJob", { userId: this.userIds, jobId: this.collectId })
+            .then((response) => {
+              Toast.success('成功删除');
+              this.$router.push('/home');
+            })
+            .catch((error) => {
+              Toast.fail('没有权限删除该岗位');
+            });
+            
+        })
+        .catch(() => {
+          // on cancel
+        });
+    }
   },
 
   components: {
@@ -426,5 +451,8 @@ export default {
     position: absolute;
     right: 1rem;
   }
+}
+/deep/.van-nav-bar .van-icon{
+  padding-left: 0.3rem;
 }
 </style>

@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import { Icon, Image as VanImage, Field, ActionSheet, Dialog, Toast } from "vant";
+import { Icon, Image as VanImage, Field, ActionSheet, Toast } from "vant";
 import { mapState } from "vuex";
 export default {
   name: "ChatListDetails",
@@ -229,27 +229,21 @@ export default {
             .post("/chat/storeResume", { userId, resumeId })
             .then((response) => {
               // 在这里可以处理响应，例如显示成功消息
-              Toast.success('投递成功');
-              
+              Toast.success("投递成功");
             })
             .catch((error) => {
               // 在这里可以处理错误，例如显示错误消息
               console.error("发送简历时出错:", error);
-              Toast.fail('勿重复投递');
+              Toast.fail("勿重复投递");
             });
 
           break;
         case 2:
           // 对方简历：跳转页面
-          console.log(item.index);
-          break;
-        default:
+          const sender = this.otherUser.sender;
+          this.$router.push({ name: "ResumeDetails", params: { sender } });
           break;
       }
-      // Dialog.alert({
-      //   title: "标题",
-      //   message: "弹窗内容",
-      // })
     },
   },
 

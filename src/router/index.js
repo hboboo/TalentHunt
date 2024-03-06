@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import App from '../App.vue'
 
+
 const home = () => import('../views/home/home.vue')
 const search = () => import('../views/search/search.vue')
 const homePage = () => import('../views/homepage/homePage.vue')
@@ -16,6 +17,7 @@ const collect = () => import('../views/collect/collect.vue')
 const myIssue = () => import('../views/myIssue/myIssue.vue')
 const personalInfo = () => import('../views/personalInfo/personalInfo.vue')
 const compileInfo = () => import('../views/personalInfo/compileInfo/compileInfo.vue')
+const resumeDetails = () => import('../views/resumeDetails/resumeDetails.vue')
 
 Vue.use(VueRouter)
 
@@ -83,7 +85,7 @@ const routes = [{
         {
           path: 'chatListDetails',
           component: chatListDetails
-        }
+        },
       ]
     },
     //收藏页面
@@ -106,6 +108,12 @@ const routes = [{
           component: compileInfo
         }
       ]
+    },
+    //简历页面
+    {
+      path: '/resumeDetails/:sender',
+      name: 'ResumeDetails',
+      component: resumeDetails
     }
   ]
 }]
