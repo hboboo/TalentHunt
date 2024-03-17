@@ -83,7 +83,7 @@
             autosize
             label="职责"
             type="textarea"
-            maxlength="50"
+            maxlength="300"
             placeholder="请输入岗位职责句号分隔"
             show-word-limit
           />
@@ -93,7 +93,7 @@
             autosize
             label="任职要求"
             type="textarea"
-            maxlength="50"
+            maxlength="300"
             placeholder="请输入任职要求句号分隔"
             show-word-limit
           />
@@ -256,7 +256,7 @@
             autosize
             label="地址"
             type="textarea"
-            maxlength="30"
+            maxlength="200"
             placeholder="请输入公司地址"
             show-word-limit
           />
@@ -266,7 +266,7 @@
             autosize
             label="介绍"
             type="textarea"
-            maxlength="100"
+            maxlength="500"
             placeholder="请输入有关公司介绍"
             show-word-limit
           />
@@ -409,8 +409,6 @@ export default {
       this.$http
         .post("/submit", formData)
         .then((res) => {
-          console.log(res.data); // 输出后端返回的数据
-
           Dialog.confirm({
             title: "岗位发布成功",
             message: "是否再发布一个岗位",

@@ -40,20 +40,20 @@
             v-model="project"
             rows="2"
             autosize
-            label="项目经历"
+            label="项目经验"
             type="textarea"
             maxlength="200"
-            placeholder="请填你的项目经历"
+            placeholder="请填你的项目经验"
             show-word-limit
           />
           <van-field
             v-model="school"
             rows="2"
             autosize
-            label="学校经历"
+            label="教育背景"
             type="textarea"
             maxlength="200"
-            placeholder="请填你的学校经历"
+            placeholder="请填你的教育背景"
             show-word-limit
           />
           <div style="margin: 16px">
@@ -148,6 +148,7 @@ export default {
   .wh(100%, 100%);
   z-index: 99;
   background-color: #f5f5f5;
+  overflow-y: auto;
 }
 
 .compileInfo-top-container {

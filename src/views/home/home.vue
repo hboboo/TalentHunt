@@ -114,7 +114,10 @@ export default {
     return {
       changeShow: "career", //默认选取全职
       content: "", //默认选取全部
-      images: ["https://img01.yzcdn.cn/vant/apple-1.jpg", "https://img01.yzcdn.cn/vant/apple-2.jpg"],
+      images: [
+        require("../../assets/Snipaste_2024-03-13_16-03-32.png"),
+        require("../../assets/Snipaste_2024-03-13_15-45-03.png")
+      ],
       jobList: [], //渲染列表
       jobType: "", //储存第一次筛选的结果
       issiev: false,
@@ -140,7 +143,7 @@ export default {
 
   computed: {
     identityText() {
-      return this.role === 'jobSeeker' ? '应聘版' : '招聘版';
+      return this.role === 'jobSeeker' ? '求职版' : '招聘版';
     },
   },
 

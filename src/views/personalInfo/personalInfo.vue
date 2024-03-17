@@ -37,11 +37,11 @@
         <p>{{user.work}}</p>
       </div>
       <div class="project-experience">
-        <span>项目经历：</span>
+        <span>项目经验：</span>
         <p>{{user.project}}</p>
       </div>
       <div class="education-experience">
-        <span>教育经历：</span>
+        <span>教育背景：</span>
         <p>{{user.school}}</p>
       </div>
     </section>

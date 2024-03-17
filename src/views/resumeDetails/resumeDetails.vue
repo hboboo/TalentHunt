@@ -33,7 +33,7 @@
         <p>{{user.advantage}}</p>
       </div>
       <div class="work-experience">
-        <span>工作经历：</span>
+        <span>工作经验：</span>
         <p>{{user.work}}</p>
       </div>
       <div class="project-experience">
@@ -41,7 +41,7 @@
         <p>{{user.project}}</p>
       </div>
       <div class="education-experience">
-        <span>教育经历：</span>
+        <span>教育背景：</span>
         <p>{{user.school}}</p>
       </div>
       </section>
@@ -72,8 +72,6 @@ export default {
     this.userId = localStorage.getItem("userId");
     this.otherUserId = this.$route.params.sender;
 
-    console.log(this.otherUserId);
-    console.log(this.userId);
 
     this.getUserResume();
   },
@@ -91,7 +89,7 @@ export default {
         .then((response) => {
           this.user = response.data.otherUser;
           this.loading = false;
-          console.log(this.user);
+          
         })
         .catch((error) => {
           Dialog.alert({

@@ -19,13 +19,13 @@
         <div class="user-type">
           <van-radio-group v-model="role" direction="horizontal">
             <van-radio name="recruiter" icon-size="0.9rem">招聘者</van-radio>
-            <van-radio name="jobSeeker" icon-size="0.9rem">应聘者</van-radio>
+            <van-radio name="jobSeeker" icon-size="0.9rem">求职者</van-radio>
           </van-radio-group>
         </div>
         <div class="user-info">
           <div class="user-info-name">
-            <h2>姓名</h2>
-            <input type="text" placeholder="输入姓名" required v-model="username" class="name-type" />
+            <h2>昵称</h2>
+            <input type="text" placeholder="输入昵称" required v-model="username" class="name-type" />
           </div>
           <div class="user-info-logo">
             <h2>头像</h2>
