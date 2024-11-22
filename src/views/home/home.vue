@@ -194,8 +194,7 @@ export default {
     },
 
     confirmFilters() {
-      // 向后端发送带有选择的过滤器值的请求
-      // 根据你的后端 API，修改端点和参数
+      // 向后端发送带有选择的组合筛选值的请求
       this.$http
         .post("/job/filtrate", {
           job_education: this.job_education,

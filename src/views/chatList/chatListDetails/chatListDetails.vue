@@ -140,12 +140,10 @@ export default {
         .post("/chat", postData)
         .then((response) => {
           this.currentUserMessage.push(postData);
-          // console.log('Message sent successfully:', response.data);
-          // 清空输入框内容
           this.content = "";
         })
         .catch((error) => {
-          // 处理错误，如果有的话
+          // 处理错误
           console.error("Error sending message:", error);
         });
     },

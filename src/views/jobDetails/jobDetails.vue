@@ -184,8 +184,8 @@ export default {
         .then((response) => {
           this.jobDetails = response.data;
           const userId = this.jobDetails.userId;
-          this.sendUserId = userId; //存一下当前Id
-          // 第二个请求使用userId
+          this.sendUserId = userId; 
+          
           return this.$http.post("/user/userId", { userId });
         })
         .then((response2) => {
